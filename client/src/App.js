@@ -15,6 +15,7 @@ class App extends React.Component {
         <Route exact path="/adpost" component={AdPostPage} />
         <Route exact path="/loginsignup" component={LoginSignUpPage} />
         <Route exact path="/userprofile" component={UserProfilePage} />
+
       </Switch>
     );
   }
