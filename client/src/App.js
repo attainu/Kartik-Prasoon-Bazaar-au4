@@ -1,26 +1,22 @@
 import React from "react";
-import logo from "./logo.svg";
-import "./App.css";
-
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import { Switch, Route } from "react-router-dom";
+// import { connect } from "react-redux";
+import HomePage from "../src/pages/HomePage/Homepage";
+import ResultsPage from "../src/pages/ResultsPage/ResultsPage";
+import AdPostPage from "../src/pages/AdPostPage/AdPostPage";
+import LoginSignUpPage from "../src/pages/LoginSignUpPage/LoginSignUpPage";
+import UserProfilePage from "../src/pages/UserProfilePage/UserProfilePage"
+class App extends React.Component {
+  render() {
+    return (
+      <Switch>
+        <Route exact path="/" component={HomePage} />
+        <Route exact path="/results" component={ResultsPage} />
+        <Route exact path="/adpost" component={AdPostPage} />
+        <Route exact path="/loginsignup" component={LoginSignUpPage} />
+        <Route exact path="/userprofile" component={UserProfilePage} />
+      </Switch>
+    );
+  }
 }
-
 export default App;
