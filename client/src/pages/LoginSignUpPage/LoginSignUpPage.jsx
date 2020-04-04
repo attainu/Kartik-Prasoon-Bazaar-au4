@@ -1,7 +1,7 @@
 import React from "react";
 
-import Login from "../../components/auth/Login.component";
-import Register from "../../components/auth/register.component";
+import Login from "../../components/Auth/Login.component";
+import Register from "../../components/Auth/Register.component";
 
 class LoginSignUpPage extends React.Component {
   render() {

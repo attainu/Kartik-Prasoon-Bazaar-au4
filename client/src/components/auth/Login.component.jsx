@@ -35,7 +35,7 @@ class Login extends Component {
             <div className="col-md-8 m-auto">
               <h1 className="display-4 text-center">Log In</h1>
               <p className="lead text-center">Sign in to your Bazaar account</p>
-              <form noValidate  onSubmit={this.handleSubmit}>
+              <form noValidate onSubmit={this.handleSubmit}>
                 <div className="form-group">
                   <input
                     type="email"
