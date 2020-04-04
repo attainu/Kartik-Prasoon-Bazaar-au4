@@ -7,7 +7,7 @@ class LoginSignUpPage extends React.Component {
   render() {
     return (
       <div>
-        <hi>LoginSignUpPage</hi>
+        <h1>LoginSignUpPage</h1>
         <Login />
         <Register />
       </div>
