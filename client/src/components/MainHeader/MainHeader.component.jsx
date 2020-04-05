@@ -6,7 +6,7 @@ class MainHeader extends Component {
             <div>
                 <nav className="navbar navbar-expand-sm navbar-dark bg-dark sticky-top display">
                     <a className="navbar-brand" href="#">
-                        <img src={Logo} width="100" height="40" />
+                        <img src={Logo} style={{ width: "10vw", height: "7vh" }} />
                     </a>
                     <button className="navbar-toggler" data-toggle="collapse" data-target="#navbar-menu">
                         <span className="navbar-toggler-icon"></span>
