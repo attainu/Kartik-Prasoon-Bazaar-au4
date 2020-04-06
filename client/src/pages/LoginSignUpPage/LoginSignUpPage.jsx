@@ -1,7 +1,7 @@
 import React from "react";
 
 import Login from "../../components/Auth/Login.component";
-import Register from "../../components/Auth/Register.component";
+import Register from "../../components/Auth/register.component";
 //import GoogleAuth from "../../components/Auth/GoogleAuth.component";
 
 class LoginSignUpPage extends React.Component {

@@ -6,14 +6,14 @@ class MainHeader extends Component {
             <div>
                 <nav className="navbar navbar-expand-sm navbar-dark bg-dark sticky-top display">
                     <a className="navbar-brand" href="#">
-                        <img src={Logo} style={{ width: "10vw", height: "7vh" }} />
+                        <img src={Logo} style={{ width: "90px", height: "7vh" }} />
                     </a>
                     <button className="navbar-toggler" data-toggle="collapse" data-target="#navbar-menu">
                         <span className="navbar-toggler-icon"></span>
                     </button>
                     <div className="collapse navbar-collapse" id="navbar-menu">
                         <div className="nav-item dropdown">
-                            <a className="nav-link dropdown-toggle text-white" data-toggle="dropdown" href="#"  >City</a>
+                            <a className="nav-link dropdown-toggle text-white" data-toggle="dropdown" href="#"  >Select City</a>
                             <div className="dropdown-menu">
                                 <a className="dropdown-item" href="#">Delhi</a>
                                 <a className="dropdown-item" href="#">Mumbai</a>
