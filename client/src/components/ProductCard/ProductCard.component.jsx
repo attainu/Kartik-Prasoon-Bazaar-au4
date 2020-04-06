@@ -4,7 +4,7 @@ class ProductCard extends Component {
     render() {
         return (
             <div className="row container-fluid row-col-4">
-                <div className="col-sm-6 col-lg-3 mt-5">
+                <div className="col-xs-3 col-lg-3 mt-5">
                     <div className="card bg-light border-dark">
                         <a href="#" className=" text-decoration-none">
                             <div className="card-body text-body ">
