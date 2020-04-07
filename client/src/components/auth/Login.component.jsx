@@ -1,6 +1,10 @@
 import React, { Component } from "react";
-import axios from "axios";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 import classnames from "classnames";
+import { withRouter } from "react-router-dom";
+
+import { loginUser } from "../../Redux/auth/auth-actions";
 
 class Login extends Component {
   constructor() {
@@ -12,6 +16,22 @@ class Login extends Component {
     };
   }
 
+  componentDidMount() {
+    if (this.props.auth.isAuthenticated) {
+      this.props.history.push("/");
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.auth.isAuthenticated) {
+      this.props.history.push("/");
+    }
+
+    if (nextProps.auth.errors) {
+      this.setState({ errors: nextProps.auth.errors });
+    }
+  }
+
   handleSubmit = (event) => {
     event.preventDefault();
 
@@ -20,10 +40,7 @@ class Login extends Component {
       password: this.state.password,
     };
 
-    axios
-      .post("/api/users/login", user)
-      .then((res) => console.log(res.data))
-      .catch((err) => this.setState({ errors: err.response.data }));
+    this.props.loginUser(user);
   };
 
   handleChange = (event) => {
@@ -80,4 +97,17 @@ class Login extends Component {
   }
 }
 
-export default Login;
+Login.propTypes = {
+  loginUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  loginUser: (userData) => dispatch(loginUser(userData)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Login));

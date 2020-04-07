@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import classnames from "classnames";
+import { withRouter } from "react-router-dom";
 
 import { registerUser } from "../../Redux/auth/auth-actions";
 
@@ -17,18 +18,23 @@ class Register extends Component {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.auth.errors) {
+      this.setState({ errors: nextProps.auth.errors });
+    }
+  }
+
   handleSubmit = (event) => {
     event.preventDefault();
 
-    //const { name, email, password, password2 } = this.state;
     const newUser = {
       name: this.state.name,
       email: this.state.email,
       password: this.state.password,
       password2: this.state.password2,
     };
-
-    this.props.registerUser(newUser);
+    const data = { newUser: newUser, history: this.props.history };
+    this.props.registerUser(data);
   };
 
   handleChange = (event) => {
@@ -130,4 +136,7 @@ const mapDispatchToProps = (dispatch) => ({
   registerUser: (userData) => dispatch(registerUser(userData)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Register);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(Register));

@@ -8,6 +8,7 @@ const users = require("./routes/api/users");
 const app = express();
 
 const mongoose = require("./config/mongo-database");
+//const postDb = require("./config/postgres-database");
 
 // body-parser middleware
 app.use(bodyParser.urlencoded({ extended: false }));
