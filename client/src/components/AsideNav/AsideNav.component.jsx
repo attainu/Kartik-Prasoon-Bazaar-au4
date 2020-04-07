@@ -3,8 +3,8 @@ import "./AsideNav.styles.scss"
 class AsideNav extends Component {
     render() {
         return (
-            <div>
-                <nav className="nav flex-column border border-dark bg-secondary position-static" id="aside-nav-category">
+            <div className="" id="aside-nav">
+                <nav className="nav flex-column border border-dark bg-secondary position-static mt-3" id="aside-nav-category">
                     <h5>Categories</h5>
                     <div className="ml-3 text-body">
                         <a className="nav-link active text-white" href="#">Automobiles</a>

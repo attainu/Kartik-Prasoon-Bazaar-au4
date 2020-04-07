@@ -9,7 +9,7 @@ class ResultsPage extends React.Component {
             <Fragment>
                 <MainHeader />
                 <SecondaryHeader />
-                <div id="aside-product">
+                <div className="d-flex flex-row justify-content-center">
                     <AsideNav id="aside" />
                     <ProductCard id="product" />
                 </div>

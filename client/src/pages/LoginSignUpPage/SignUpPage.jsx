@@ -1,6 +1,6 @@
 import React from "react";
 
-import Register from "../../components/Auth/Register.component";
+import Register from "../../components/Auth/register.component";
 //import GoogleAuth from "../../components/Auth/GoogleAuth.component";
 
 class SignUpPage extends React.Component {
