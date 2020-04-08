@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch, Route, Router } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
@@ -7,6 +7,7 @@ import PropTypes from "prop-types";
 import setAuthToken from "./utils/setAuthToken";
 import { setCurrentUser } from "./Redux/auth/auth-actions";
 
+import MainHeader from "./components/MainHeader/MainHeader.component";
 import HomePage from "../src/pages/HomePage/Homepage";
 import ResultsPage from "../src/pages/ResultsPage/ResultsPage";
 import AdPostPage from "../src/pages/AdPostPage/AdPostPage";
@@ -29,14 +30,15 @@ class App extends React.Component {
 
   render() {
     return (
-      <Switch>
+      <Router>
+        <MainHeader />
         <Route exact path="/" component={HomePage} />
         <Route exact path="/results" component={ResultsPage} />
         <Route exact path="/adpost" component={AdPostPage} />
         <Route exact path="/signup" component={SignUpPage} />
         <Route exact path="/login" component={LoginPage} />
         <Route exact path="/userprofile" component={UserProfilePage} />
-      </Switch>
+      </Router>
     );
   }
 }

@@ -8,13 +8,11 @@ module.exports = {
     clientSecret: "7fxvEiSfg3Fx0sraVAQIWmNp",
   },
   postCred: {
-    database: "df3vkeqs77n55v",
-    user: "rrlwgamouqprua",
-    password:
-      "5d37456b68afc41bedd9d64d8c0257a444ba9d40f37fccb31b3e9e467a3f3857",
+    database: "bazaar",
+    user: "postgres",
+    password: "6567",
     dbType: {
-      host: "ec2-54-159-112-44.compute-1.amazonaws.com",
-      port: "5432",
+      host: "localhost",
       dialect: "postgres",
     },
   },
