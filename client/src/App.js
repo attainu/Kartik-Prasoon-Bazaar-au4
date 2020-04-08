@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Router } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";

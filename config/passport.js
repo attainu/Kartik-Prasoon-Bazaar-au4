@@ -9,17 +9,17 @@ const opts = {};
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 opts.secretOrKey = keys.secretOrKey;
 
-module.exports = passport => {
+module.exports = (passport) => {
   passport.use(
     new JwtStrategy(opts, (jwt_payload, done) => {
       User.findById(jwt_payload.id)
-        .then(user => {
+        .then((user) => {
           if (user) {
             return done(null, jwt_payload);
           }
           return done(null, false);
         })
-        .catch(err => console.log(err));
+        .catch((err) => console.log(err));
     })
   );
 
@@ -29,6 +29,7 @@ module.exports = passport => {
     new GooglePlusTokenStrategy(
       keys.googleAuthKey,
       async (accessToken, refreshToken, profile, done) => {
+        console.log("hello");
         try {
           console.log("access token", accessToken);
           console.log("refresh token", refreshToken);
@@ -48,8 +49,8 @@ module.exports = passport => {
               id: profile.id,
               name: profile.displayName,
               email: profile.emails[0].value,
-              image: profile.photos[0].value
-            }
+              image: profile.photos[0].value,
+            },
           });
           await newUser.save();
           done(null, newUser);

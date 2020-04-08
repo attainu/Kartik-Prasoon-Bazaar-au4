@@ -1,13 +1,15 @@
 import React from "react";
 
+import MainHeader from "../../components/MainHeader/MainHeader.component";
 import Login from "../../components/Auth/Login.component";
-//import GoogleAuth from "../../components/Auth/GoogleAuth.component";
+import GoogleAuth from "../../components/Auth/GoogleAuth.component";
 
 class LoginPage extends React.Component {
   render() {
     return (
       <div>
-        {/* <GoogleAuth /> */}
+        <MainHeader />
+        <GoogleAuth />
         <Login />
       </div>
     );

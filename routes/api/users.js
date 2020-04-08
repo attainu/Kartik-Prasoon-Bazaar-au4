@@ -28,7 +28,7 @@ router.post("/register", (req, res) => {
     return res.status(400).json(errors);
   }
 
-  User.findOne({ "local.email": req.body.email }).then(user => {
+  User.findOne({ "local.email": req.body.email }).then((user) => {
     if (user) {
       errors.email = "Email Already Exists";
       return res.status(400).json(errors);
@@ -38,8 +38,8 @@ router.post("/register", (req, res) => {
         local: {
           name: req.body.name,
           email: req.body.email,
-          password: req.body.password
-        }
+          password: req.body.password,
+        },
       });
 
       bcrypt.genSalt(10, (err, salt) => {
@@ -48,8 +48,8 @@ router.post("/register", (req, res) => {
           newUser.local.password = hash;
           newUser
             .save()
-            .then(user => res.json(user))
-            .catch(err => console.log(err));
+            .then((user) => res.json(user))
+            .catch((err) => console.log(err));
         });
       });
     }
@@ -71,14 +71,14 @@ router.post("/login", (req, res) => {
   const password = req.body.password;
 
   //find the user by email
-  User.findOne({ "local.email": email }).then(user => {
+  User.findOne({ "local.email": email }).then((user) => {
     if (!user) {
       errors.email = "User not found";
       return res.status(404).json(errors);
     }
 
     // Check Password
-    bcrypt.compare(password, user.local.password).then(isMatch => {
+    bcrypt.compare(password, user.local.password).then((isMatch) => {
       if (isMatch) {
         // User Matched
 
@@ -86,7 +86,8 @@ router.post("/login", (req, res) => {
           id: user.id,
           method: user.method,
           name: user.local.name,
-          email: user.local.email
+          email: user.local.email,
+          image: user.local.image,
         }; // Create JWT payload
 
         //Sign Token
@@ -97,7 +98,7 @@ router.post("/login", (req, res) => {
           (err, token) => {
             res.json({
               success: true,
-              token: "Bearer " + token
+              token: "Bearer " + token,
             });
           }
         );
@@ -116,19 +117,20 @@ router.post(
   "/oauth",
   passport.authenticate("googleToken", { session: false }),
   (req, res) => {
+    console.log(req.user);
     const payload = {
       id: req.user.id,
       method: req.user.method,
       name: req.user.google.name,
       email: req.user.google.email,
-      image: req.user.google.image
+      image: req.user.google.image,
     }; // Create JWT payload
 
     //Sign Token
     jwt.sign(payload, keys.secretOrKey, { expiresIn: 3600 }, (err, token) => {
       res.json({
         success: true,
-        token: "Bearer " + token
+        token: "Bearer " + token,
       });
     });
   }
