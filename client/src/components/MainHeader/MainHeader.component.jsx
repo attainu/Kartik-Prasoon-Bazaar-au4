@@ -103,7 +103,7 @@ class MainHeader extends Component {
                 </a>
               </div>
             </div>
-            <form className="form-group form-inline ml-auto">
+            <form className="form-inline ml-auto">
               <input
                 className="form-control mr-sm-2"
                 type="search"
