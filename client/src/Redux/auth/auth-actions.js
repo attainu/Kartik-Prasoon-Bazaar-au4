@@ -30,6 +30,13 @@ export const loginUser = (userData) => (dispatch) => {
     );
 };
 
+export const googleLogin = (userData) => (dispatch) => {
+  axios
+    .post("/api/users/oauth", userData)
+    .then((res) => setToken(res, dispatch))
+    .catch((err) => console.log(err));
+};
+
 const setToken = (res, dispatch) => {
   // Save token to local storage
   const { token } = res.data;

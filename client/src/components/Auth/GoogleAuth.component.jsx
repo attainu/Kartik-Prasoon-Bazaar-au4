@@ -1,17 +1,20 @@
 import React, { Component } from "react";
 import GoogleLogin from "react-google-login";
-import axios from "axios";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+
+import { googleLogin } from "../../Redux/auth/auth-actions";
 
 class GoogleAuth extends Component {
   responseGoogle = (response) => {
-    console.log(response.tokenObj.access_token);
     const data = {
-      access_token: response.tokenObj.access_token,
+      id: response.profileObj.googleId,
+      name: response.profileObj.name,
+      email: response.profileObj.email,
+      image: response.profileObj.imageUrl,
     };
-    axios
-      .post("/api/users/oauth", data)
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
+    console.log(data);
+    this.props.googleLogin(data);
   };
 
   render() {
@@ -29,4 +32,12 @@ class GoogleAuth extends Component {
   }
 }
 
-export default GoogleAuth;
+GoogleAuth.protoTypes = {
+  googleLogin: PropTypes.func.isRequired,
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  googleLogin: (userData) => dispatch(googleLogin(userData)),
+});
+
+export default connect(null, mapDispatchToProps)(GoogleAuth);

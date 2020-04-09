@@ -113,28 +113,49 @@ router.post("/login", (req, res) => {
 // @route     POST api/users/oauth
 // @desc      Logion User using oauth / Return JWT Token
 // @access    Public
-router.post(
-  "/oauth",
-  passport.authenticate("googleToken", { session: false }),
-  (req, res) => {
-    console.log(req.user);
-    const payload = {
-      id: req.user.id,
-      method: req.user.method,
-      name: req.user.google.name,
-      email: req.user.google.email,
-      image: req.user.google.image,
-    }; // Create JWT payload
+router.post("/oauth", async (req, res) => {
+  let payId;
 
-    //Sign Token
-    jwt.sign(payload, keys.secretOrKey, { expiresIn: 3600 }, (err, token) => {
-      res.json({
-        success: true,
-        token: "Bearer " + token,
-      });
+  const existingUser = await User.findOne({ "google.id": req.body.id });
+
+  if (!existingUser) {
+    console.log("Adding new user to the data base");
+
+    // Adding new user to DB
+    const newGoogleUser = new User({
+      method: "google",
+      google: {
+        id: req.body.id,
+        name: req.body.name,
+        email: req.body.email,
+        image: req.body.image,
+      },
     });
+    await newGoogleUser
+      .save()
+      .then((user) => (payId = user.id))
+      .catch((err) => console.log(err));
+  } else {
+    console.log("User already exists in database");
+    payId = existingUser.id;
   }
-);
+
+  // JWT payload
+  const jwtPayload = {
+    id: payId,
+    method: "google",
+    name: req.body.name,
+    email: req.body.email,
+    image: req.body.image,
+  };
+  //Sign Token
+  jwt.sign(jwtPayload, keys.secretOrKey, { expiresIn: 3600 }, (err, token) => {
+    res.json({
+      success: true,
+      token: "Bearer " + token,
+    });
+  });
+});
 
 // @route     GET api/users/current
 // @desc      Return Current User
