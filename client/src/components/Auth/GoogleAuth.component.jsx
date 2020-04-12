@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
 import { googleLogin } from "../../Redux/auth/auth-actions";
+import "./googleAuth.style.scss";
 
 class GoogleAuth extends Component {
   responseGoogle = (response) => {
@@ -13,19 +14,32 @@ class GoogleAuth extends Component {
       email: response.profileObj.email,
       image: response.profileObj.imageUrl,
     };
-    console.log(data);
     this.props.googleLogin(data);
   };
 
   render() {
     return (
-      <div>
-        <h2>Google Auth</h2>
+      <div className="d-flex justify-content-center">
         <GoogleLogin
           clientId="774983211870-m6j8ocp25dmndcdk2a643v5vmfad8e4s.apps.googleusercontent.com"
-          buttonText="Login"
+          render={(renderProps) => (
+            <div class="google-btn" onClick={renderProps.onClick}>
+              <div class="google-icon-wrapper">
+                <img
+                  class="google-icon"
+                  src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
+                  alt="google"
+                />
+              </div>
+              <p class="btn-text">
+                <b>Sign in with google</b>
+              </p>
+            </div>
+          )}
+          buttonText="Login With Google"
           onSuccess={this.responseGoogle}
           onFailure={this.responseGoogle}
+          className="signInButton"
         />
       </div>
     );

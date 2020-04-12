@@ -10,7 +10,22 @@ class HomePage extends React.Component {
       <div>
         <SecondaryHeader />
         <Carousel />
-        <ProductCard />
+        <br />
+        <div className="row col-11 container-fluid justify-content-start mx-auto">
+          <ProductCard />
+          <ProductCard />
+          <ProductCard />
+          <ProductCard />
+          <ProductCard />
+          <ProductCard />
+          <ProductCard />
+          <ProductCard />
+          <ProductCard />
+          <ProductCard />
+          <ProductCard />
+          <ProductCard />
+          <ProductCard />
+        </div>
       </div>
     );
   }

@@ -87,7 +87,7 @@ router.post("/login", (req, res) => {
           method: user.method,
           name: user.local.name,
           email: user.local.email,
-          image: user.local.image,
+          image: "https://www.gravatar.com/avatar/anything?s=200&d=mm",
         }; // Create JWT payload
 
         //Sign Token

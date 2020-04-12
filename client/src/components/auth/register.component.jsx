@@ -5,6 +5,7 @@ import classnames from "classnames";
 import { withRouter } from "react-router-dom";
 
 import { registerUser } from "../../Redux/auth/auth-actions";
+import GoogleAuth from "./GoogleAuth.component";
 
 class Register extends Component {
   constructor() {
@@ -19,6 +20,9 @@ class Register extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    if (nextProps.auth.isAuthenticated) {
+      this.props.history.push("/");
+    }
     if (nextProps.auth.errors) {
       this.setState({ errors: nextProps.auth.errors });
     }
@@ -46,11 +50,11 @@ class Register extends Component {
   render() {
     const { errors } = this.state;
     return (
-      <div className="register">
+      <div className="register mt-5">
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
-              <h1 className="display-4 text-center">Sign Up</h1>
+              <h1 className="display-3 text-center">Sign Up</h1>
               <p className="lead text-center">Create your Bazaar account</p>
               <form noValidate onSubmit={this.handleSubmit}>
                 <div className="form-group">
@@ -115,6 +119,8 @@ class Register extends Component {
                 </div>
                 <input type="submit" className="btn btn-info btn-block mt-4" />
               </form>
+              <h1 className="display-4 text-center mt-3">Or</h1>
+              <GoogleAuth />
             </div>
           </div>
         </div>

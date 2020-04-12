@@ -5,6 +5,7 @@ import classnames from "classnames";
 import { withRouter } from "react-router-dom";
 
 import { loginUser } from "../../Redux/auth/auth-actions";
+import GoogleAuth from "./GoogleAuth.component";
 
 class Login extends Component {
   constructor() {
@@ -14,12 +15,6 @@ class Login extends Component {
       password: "",
       errors: {},
     };
-  }
-
-  componentDidMount() {
-    if (this.props.auth.isAuthenticated) {
-      this.props.history.push("/");
-    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -52,11 +47,11 @@ class Login extends Component {
   render() {
     const { errors } = this.state;
     return (
-      <div className="login">
+      <div className="login mt-5">
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
-              <h1 className="display-4 text-center">Log In</h1>
+              <h1 className="display-3 text-center">Log In</h1>
               <p className="lead text-center">Sign in to your Bazaar account</p>
               <form noValidate onSubmit={this.handleSubmit}>
                 <div className="form-group">
@@ -89,6 +84,8 @@ class Login extends Component {
                 </div>
                 <input type="submit" className="btn btn-info btn-block mt-4" />
               </form>
+              <h1 className="display-4 text-center mt-3">Or</h1>
+              <GoogleAuth />
             </div>
           </div>
         </div>
