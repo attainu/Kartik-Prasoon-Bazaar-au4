@@ -26,7 +26,6 @@ class EditProfilePage extends Component {
     this.setState({
       id: this.props.auth.user.id,
       name: this.props.auth.user.name,
-      image: this.props.auth.user.image,
       city: this.props.auth.user.city,
       contactNo: this.props.auth.user.contactNo,
       facebook: this.props.auth.user.facebook,
@@ -51,6 +50,15 @@ class EditProfilePage extends Component {
     this.props.editProfile(data);
   };
 
+  handleSubmitPhoto = (event) => {
+    event.preventDefault();
+
+    const newPhoto = new FormData(event.target);
+    console.log(newPhoto);
+    const data = { newUser: newPhoto, history: this.props.history };
+    this.props.editProfile(data);
+  };
+
   handleChange = (event) => {
     const { name, value } = event.target;
 
@@ -70,21 +78,62 @@ class EditProfilePage extends Component {
               <p className="lead text-center">
                 Let's get some information to make your profile stand out
               </p>
-              <div className="form-group">
-                <div>
-                  <img
-                    className="rounded-circle"
-                    src={this.state.image}
-                    alt="my"
-                    style={{ width: "200px" }}
-                  />
+
+              {/* Edit Profile Picture */}
+              <form
+                onSubmit={this.handleSubmitPhoto}
+                enctype="multipart/form-data"
+              >
+                <div className="form-group">
+                  <div>
+                    <img
+                      className="rounded-circle"
+                      src={this.props.auth.user.image}
+                      alt="my"
+                      style={{ width: "200px" }}
+                    />
+                  </div>
+                  <br />
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <button
+                        type="submit"
+                        class="btn btn-info"
+                        id="inputGroupFileAddon01"
+                      >
+                        Change Profile Picture
+                      </button>
+                    </div>
+                    <div class="custom-file">
+                      <input
+                        type="text"
+                        value={this.state.id}
+                        name="id"
+                        hidden
+                      />
+                      <input
+                        type="file"
+                        class="custom-file-input"
+                        id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01"
+                        name="image"
+                        onChange={this.handleChange}
+                        required
+                      />
+                      <label class="custom-file-label" for="inputGroupFile01">
+                        {this.state.image === ""
+                          ? "Choose file"
+                          : this.state.image}
+                      </label>
+                    </div>
+                  </div>
+                  <small className="form-text text-muted">
+                    Change Your Profile Picture
+                  </small>
                 </div>
-                <br />
-                <button className="btn btn-info">Select New Image</button>
-                <small className="form-text text-muted">
-                  Change Your Profile Picture
-                </small>
-              </div>
+              </form>
+
+              {/* Edit Profile */}
               <form onSubmit={this.handleSubmit}>
                 <div className="form-group">
                   <input

@@ -39,11 +39,13 @@ export const googleLogin = (userData) => (dispatch) => {
 };
 
 export const editProfile = (data) => (dispatch) => {
+  let pass = data.newUser ? data.newUser : data;
   axios
-    .post("/api/users/editprofile", data.newUser)
+    .post("/api/users/editprofile", pass)
     .then(async (res) => {
       let ee = await setToken(res, dispatch);
       data.history.push("/dashboard");
+      console.log(ee);
     })
     .catch((err) => console.log(err));
 };

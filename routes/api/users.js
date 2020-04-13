@@ -4,6 +4,25 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const keys = require("../../config/keys");
 const passport = require("passport");
+const cloudinary = require("cloudinary").v2;
+const multer = require("multer");
+
+// Multer config
+const storage = multer.diskStorage({
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + "-" + file.originalname);
+  },
+});
+const upload = multer({
+  storage: storage,
+});
+
+// Cloudinary config
+cloudinary.config({
+  cloud_name: keys.cloudinaryKey.cloud_name,
+  api_key: keys.cloudinaryKey.api_key,
+  api_secret: keys.cloudinaryKey.api_secret,
+});
 
 // Load Input Validation
 const validateRegisterInput = require("../../validation/register");
@@ -171,19 +190,30 @@ router.post("/oauth", async (req, res) => {
 // @route     POST api/users/editprofile
 // @desc      Edit user collection
 // @access    Public
-router.post("/editprofile", async (req, res) => {
+router.post("/editprofile", upload.single("image"), async (req, res) => {
   // Get fields
   const userField = {};
-  if (req.body.image) userField.image = req.body.image;
+  if (req.body.id) userField.id = req.body.id;
   if (req.body.name) userField.name = req.body.name;
   if (req.body.city) userField.city = req.body.city;
   if (req.body.contactNo) userField.contactNo = req.body.contactNo;
   if (req.body.facebook) userField.facebook = req.body.facebook;
   if (req.body.youtube) userField.youtube = req.body.youtube;
   if (req.body.instagram) userField.instagram = req.body.instagram;
+  if (req.file) {
+    let wait = await cloudinary.uploader.upload(req.file.path, function (
+      error,
+      response
+    ) {
+      if (error) {
+        response.send("err", error);
+      }
+    });
+    userField.image = wait.url;
+  }
 
   User.findByIdAndUpdate(
-    { _id: req.body.id },
+    { _id: userField.id },
     { $set: userField },
     { new: true }
   ).then((user) => {
