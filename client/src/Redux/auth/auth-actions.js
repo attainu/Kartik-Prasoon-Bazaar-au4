@@ -30,10 +30,21 @@ export const loginUser = (userData) => (dispatch) => {
     );
 };
 
+// Google Login
 export const googleLogin = (userData) => (dispatch) => {
   axios
     .post("/api/users/oauth", userData)
     .then((res) => setToken(res, dispatch))
+    .catch((err) => console.log(err));
+};
+
+export const editProfile = (data) => (dispatch) => {
+  axios
+    .post("/api/users/editprofile", data.newUser)
+    .then(async (res) => {
+      let ee = await setToken(res, dispatch);
+      data.history.push("/dashboard");
+    })
     .catch((err) => console.log(err));
 };
 

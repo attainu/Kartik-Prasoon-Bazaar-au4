@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import classnames from "classnames";
 import { withRouter } from "react-router-dom";
 
+import { selectAuthInfo } from "../../Redux/auth/auth.selector";
 import { loginUser } from "../../Redux/auth/auth-actions";
 import GoogleAuth from "./GoogleAuth.component";
 
@@ -100,7 +101,7 @@ Login.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  auth: state.auth,
+  auth: selectAuthInfo(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

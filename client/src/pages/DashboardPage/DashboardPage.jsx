@@ -4,6 +4,8 @@ import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
+import { selectAuthInfo } from "../../Redux/auth/auth.selector";
+
 import ProfileCard from "../../components/ProfileCard/ProfileCard";
 
 class DashboardPage extends React.Component {
@@ -14,7 +16,7 @@ class DashboardPage extends React.Component {
 
   render() {
     return (
-      <div className="dashboard">
+      <div className="dashboard mt-4">
         <div className="container">
           <div className="row">
             <div className="col-md-12">
@@ -25,11 +27,11 @@ class DashboardPage extends React.Component {
 
               {/* Dashboard Actions  */}
               <div className="btn-group mb-4" role="group">
-                <Link to="/edit-profile" className="btn btn-light">
+                <Link to="/editprofile" className="btn btn-light">
                   <i className="fas fa-user-circle text-info mr-1"></i> Edit
                   Profile
                 </Link>
-                <Link to="/my-ads" className="btn btn-light">
+                <Link to="/myads" className="btn btn-light">
                   <i className="fab fa-buysellads text-info mr-1"></i>
                   My Ads
                 </Link>
@@ -59,7 +61,7 @@ DashboardPage.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  auth: state.auth,
+  auth: selectAuthInfo(state),
 });
 
 export default connect(mapStateToProps)(withRouter(DashboardPage));

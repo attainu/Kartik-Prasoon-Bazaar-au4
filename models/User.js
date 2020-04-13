@@ -9,16 +9,10 @@ const UserSchema = new Schema({
     required: true,
   },
   local: {
-    name: {
-      type: String,
-    },
     email: {
       type: String,
     },
     password: {
-      type: String,
-    },
-    image: {
       type: String,
     },
   },
@@ -26,17 +20,29 @@ const UserSchema = new Schema({
     id: {
       type: String,
     },
-    name: {
-      type: String,
-    },
     email: {
       type: String,
     },
-    image: {
-      type: String,
-    },
+  },
+  name: {
+    type: String,
+  },
+  image: {
+    type: String,
   },
   city: {
+    type: String,
+  },
+  contactNo: {
+    type: Number,
+  },
+  facebook: {
+    type: String,
+  },
+  youtube: {
+    type: String,
+  },
+  instagram: {
     type: String,
   },
   date: {

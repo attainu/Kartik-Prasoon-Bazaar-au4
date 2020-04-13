@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
+import { selectAuthInfo } from "../../Redux/auth/auth.selector";
 import { logoutUser } from "../../Redux/auth/auth-actions";
 import Logo from "../../assets/logo/logo-white.png";
 
@@ -39,7 +40,7 @@ class MainHeader extends Component {
           </Link>
         </li>
         <li className="nav-item">
-          <Link className="nav-link" to="/addproduct">
+          <Link className="nav-link" to="/postad">
             Add Product
           </Link>
         </li>
@@ -130,7 +131,7 @@ MainHeader.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  auth: state.auth,
+  auth: selectAuthInfo(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -35,8 +35,9 @@ router.post("/register", (req, res) => {
     } else {
       const newUser = new User({
         method: "local",
+        name: req.body.name,
+        image: "https://www.gravatar.com/avatar/anything?s=200&d=mm",
         local: {
-          name: req.body.name,
           email: req.body.email,
           password: req.body.password,
         },
@@ -57,7 +58,7 @@ router.post("/register", (req, res) => {
 });
 
 // @route     POST api/users/login
-// @desc      Logion User / Return JWT Token
+// @desc      Login User / Return JWT Token
 // @access    Public
 router.post("/login", (req, res) => {
   const { errors, isValid } = validateLoginInput(req.body);
@@ -85,9 +86,14 @@ router.post("/login", (req, res) => {
         const payload = {
           id: user.id,
           method: user.method,
-          name: user.local.name,
+          name: user.name,
           email: user.local.email,
-          image: "https://www.gravatar.com/avatar/anything?s=200&d=mm",
+          image: user.image,
+          city: user.city,
+          contactNo: user.contactNo,
+          facebook: user.facebook,
+          youtube: user.youtube,
+          instagram: user.instagram,
         }; // Create JWT payload
 
         //Sign Token
@@ -124,29 +130,34 @@ router.post("/oauth", async (req, res) => {
     // Adding new user to DB
     const newGoogleUser = new User({
       method: "google",
+      name: req.body.name,
+      image: req.body.image,
       google: {
         id: req.body.id,
-        name: req.body.name,
         email: req.body.email,
-        image: req.body.image,
       },
     });
     await newGoogleUser
       .save()
-      .then((user) => (payId = user.id))
+      .then((user) => (payId = user))
       .catch((err) => console.log(err));
   } else {
     console.log("User already exists in database");
-    payId = existingUser.id;
+    payId = existingUser;
   }
 
   // JWT payload
   const jwtPayload = {
-    id: payId,
-    method: "google",
-    name: req.body.name,
-    email: req.body.email,
-    image: req.body.image,
+    id: payId.id,
+    method: payId.method,
+    name: payId.name,
+    email: payId.google.email,
+    image: payId.image,
+    city: payId.city,
+    contactNo: payId.contactNo,
+    facebook: payId.facebook,
+    youtube: payId.youtube,
+    instagram: payId.instagram,
   };
   //Sign Token
   jwt.sign(jwtPayload, keys.secretOrKey, { expiresIn: 3600 }, (err, token) => {
@@ -154,6 +165,53 @@ router.post("/oauth", async (req, res) => {
       success: true,
       token: "Bearer " + token,
     });
+  });
+});
+
+// @route     POST api/users/editprofile
+// @desc      Edit user collection
+// @access    Public
+router.post("/editprofile", async (req, res) => {
+  // Get fields
+  const userField = {};
+  if (req.body.image) userField.image = req.body.image;
+  if (req.body.name) userField.name = req.body.name;
+  if (req.body.city) userField.city = req.body.city;
+  if (req.body.contactNo) userField.contactNo = req.body.contactNo;
+  if (req.body.facebook) userField.facebook = req.body.facebook;
+  if (req.body.youtube) userField.youtube = req.body.youtube;
+  if (req.body.instagram) userField.instagram = req.body.instagram;
+
+  User.findByIdAndUpdate(
+    { _id: req.body.id },
+    { $set: userField },
+    { new: true }
+  ).then((user) => {
+    // JWT payload
+    const jwtPayload = {
+      id: user.id,
+      method: user.method,
+      name: user.name,
+      email: user.google.email,
+      image: user.image,
+      city: user.city,
+      contactNo: user.contactNo,
+      facebook: user.facebook,
+      youtube: user.youtube,
+      instagram: user.instagram,
+    };
+    //Sign Token
+    jwt.sign(
+      jwtPayload,
+      keys.secretOrKey,
+      { expiresIn: 3600 },
+      (err, token) => {
+        res.json({
+          success: true,
+          token: "Bearer " + token,
+        });
+      }
+    );
   });
 });
 

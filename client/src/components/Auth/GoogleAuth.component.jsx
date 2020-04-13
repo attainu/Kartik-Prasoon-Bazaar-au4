@@ -23,15 +23,15 @@ class GoogleAuth extends Component {
         <GoogleLogin
           clientId="774983211870-m6j8ocp25dmndcdk2a643v5vmfad8e4s.apps.googleusercontent.com"
           render={(renderProps) => (
-            <div class="google-btn" onClick={renderProps.onClick}>
-              <div class="google-icon-wrapper">
+            <div className="google-btn" onClick={renderProps.onClick}>
+              <div className="google-icon-wrapper">
                 <img
-                  class="google-icon"
+                  className="google-icon"
                   src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
                   alt="google"
                 />
               </div>
-              <p class="btn-text">
+              <p className="btn-text">
                 <b>Sign in with google</b>
               </p>
             </div>
