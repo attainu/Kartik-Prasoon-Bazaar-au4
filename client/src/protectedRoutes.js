@@ -3,14 +3,17 @@ import { connect } from "react-redux";
 
 export default (ComposedComponent) => {
   class RequireAuth extends Component {
-    componentWillMount() {
+    componentDidMount() {
+      if (!localStorage.jwtToken) {
+        if (!this.props.auth.isAuthenticated) {
+          this.props.history.replace("/login");
+        }
+      }
+    }
+    componentDidUpdate() {
       if (!this.props.auth.isAuthenticated) {
         this.props.history.replace("/login");
       }
-    }
-    componentWillUpdate() {
-      if (!this.props.auth.isAuthenticated)
-        this.props.history.replace("/login");
     }
     render() {
       return <ComposedComponent {...this.props} />;

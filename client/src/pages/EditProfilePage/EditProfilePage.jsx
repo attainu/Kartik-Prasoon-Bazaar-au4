@@ -22,13 +22,13 @@ class EditProfilePage extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(nextProps) {
     if (!nextProps.auth.isAuthenticated) {
       this.props.history.push("/");
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.setState({
       id: this.props.auth.user.id,
       name: this.props.auth.user.name,
@@ -87,7 +87,7 @@ class EditProfilePage extends Component {
               {/* Edit Profile Picture */}
               <form
                 onSubmit={this.handleSubmitPhoto}
-                enctype="multipart/form-data"
+                encType="multipart/form-data"
               >
                 <div className="form-group">
                   <div>
@@ -99,17 +99,17 @@ class EditProfilePage extends Component {
                     />
                   </div>
                   <br />
-                  <div class="input-group">
-                    <div class="input-group-prepend">
+                  <div className="input-group">
+                    <div className="input-group-prepend">
                       <button
                         type="submit"
-                        class="btn btn-info"
+                        className="btn btn-info"
                         id="inputGroupFileAddon01"
                       >
                         Change Profile Picture
                       </button>
                     </div>
-                    <div class="custom-file">
+                    <div className="custom-file">
                       <input
                         type="text"
                         value={this.state.id}
@@ -119,14 +119,17 @@ class EditProfilePage extends Component {
                       />
                       <input
                         type="file"
-                        class="custom-file-input"
+                        className="custom-file-input"
                         id="inputGroupFile01"
                         aria-describedby="inputGroupFileAddon01"
                         name="image"
                         onChange={this.handleChange}
                         required
                       />
-                      <label class="custom-file-label" for="inputGroupFile01">
+                      <label
+                        className="custom-file-label"
+                        htmlFor="inputGroupFile01"
+                      >
                         {this.state.image === ""
                           ? "Choose file"
                           : this.state.image}

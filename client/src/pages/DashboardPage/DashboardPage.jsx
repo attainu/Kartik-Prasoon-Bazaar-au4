@@ -9,8 +9,8 @@ import { selectAuthInfo } from "../../Redux/auth/auth.selector";
 import ProfileCard from "../../components/ProfileCard/ProfileCard";
 
 class DashboardPage extends React.Component {
-  componentWillReceiveProps(nextProps) {
-    if (!nextProps.auth.isAuthenticated) {
+  componentDidUpdate() {
+    if (!this.props.auth.isAuthenticated) {
       this.props.history.push("/");
     }
   }
