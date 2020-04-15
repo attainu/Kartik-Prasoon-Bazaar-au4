@@ -22,6 +22,12 @@ class EditProfilePage extends Component {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (!nextProps.auth.isAuthenticated) {
+      this.props.history.push("/");
+    }
+  }
+
   componentWillMount() {
     this.setState({
       id: this.props.auth.user.id,
@@ -54,7 +60,6 @@ class EditProfilePage extends Component {
     event.preventDefault();
 
     const newPhoto = new FormData(event.target);
-    console.log(newPhoto);
     const data = { newUser: newPhoto, history: this.props.history };
     this.props.editProfile(data);
   };
@@ -109,6 +114,7 @@ class EditProfilePage extends Component {
                         type="text"
                         value={this.state.id}
                         name="id"
+                        readOnly
                         hidden
                       />
                       <input
@@ -255,6 +261,7 @@ class EditProfilePage extends Component {
 }
 
 EditProfilePage.propTypes = {
+  editProfile: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
 };
 

@@ -12,11 +12,11 @@ import { setCurrentUser } from "./Redux/auth/auth-actions";
 import MainHeader from "./components/MainHeader/MainHeader.component";
 import HomePage from "./pages/HomePage/Homepage";
 import ResultsPage from "./pages/ResultsPage/ResultsPage";
-import PostAdPage from "./pages/PostAdPage/PostAdPage";
 import SignUpPage from "./pages/LoginSignUpPage/SignUpPage";
 import LoginPage from "./pages/LoginSignUpPage/LoginPage";
 import DashboardPage from "./pages/DashboardPage/DashboardPage";
 import EditProfilePage from "./pages/EditProfilePage/EditProfilePage";
+import PostAdPage from "./pages/PostAdPage/PostAdPage";
 
 class App extends React.Component {
   componentDidMount() {
@@ -37,7 +37,6 @@ class App extends React.Component {
         <MainHeader />
         <Route exact path="/" component={HomePage} />
         <Route exact path="/results" component={ResultsPage} />
-        <Route exact path="/postad" component={PostAdPage} />
         <Route exact path="/signup" component={SignUpPage} />
         <Route exact path="/login" component={LoginPage} />
         <Route exact path="/dashboard" component={RequireAuth(DashboardPage)} />
@@ -46,6 +45,7 @@ class App extends React.Component {
           path="/editprofile"
           component={RequireAuth(EditProfilePage)}
         />
+        <Route exact path="/postad" component={RequireAuth(PostAdPage)} />
         <footer className="bg-dark text-white mt-5 p-4 text-center">
           Copyright &copy; 2020 Bazaar
         </footer>

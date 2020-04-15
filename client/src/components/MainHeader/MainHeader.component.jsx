@@ -41,7 +41,7 @@ class MainHeader extends Component {
         </li>
         <li className="nav-item">
           <Link className="nav-link" to="/postad">
-            Add Product
+            Post Ad
           </Link>
         </li>
       </ul>

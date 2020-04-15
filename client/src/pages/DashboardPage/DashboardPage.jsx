@@ -9,9 +9,10 @@ import { selectAuthInfo } from "../../Redux/auth/auth.selector";
 import ProfileCard from "../../components/ProfileCard/ProfileCard";
 
 class DashboardPage extends React.Component {
-  constructor() {
-    super();
-    this.state = {};
+  componentWillReceiveProps(nextProps) {
+    if (!nextProps.auth.isAuthenticated) {
+      this.props.history.push("/");
+    }
   }
 
   render() {
@@ -45,9 +46,9 @@ class DashboardPage extends React.Component {
               {/* profile view  */}
               <ProfileCard />
 
-              <div style={{ marginBottom: "60px" }}>
+              {/* <div style={{ marginBottom: "60px" }}>
                 <button className="btn btn-danger">Delete My Account</button>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

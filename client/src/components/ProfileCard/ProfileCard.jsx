@@ -29,7 +29,7 @@ class ProfileCard extends Component {
               <p className="lead text-center">{this.props.auth.user.email}</p>
               <p>
                 {this.props.auth.user.contactNo
-                  ? this.props.auth.user.contactNo
+                  ? `+91 ` + +this.props.auth.user.contactNo
                   : ""}
               </p>
               <p>

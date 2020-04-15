@@ -7,6 +7,13 @@ const passport = require("passport");
 const cloudinary = require("cloudinary").v2;
 const multer = require("multer");
 
+// Load User Model
+const User = require("../../models/User");
+
+// Load Input Validation
+const validateRegisterInput = require("../../validation/register");
+const validateLoginInput = require("../../validation/login");
+
 // Multer config
 const storage = multer.diskStorage({
   filename: function (req, file, cb) {
@@ -23,13 +30,6 @@ cloudinary.config({
   api_key: keys.cloudinaryKey.api_key,
   api_secret: keys.cloudinaryKey.api_secret,
 });
-
-// Load Input Validation
-const validateRegisterInput = require("../../validation/register");
-const validateLoginInput = require("../../validation/login");
-
-// Load User Model
-const User = require("../../models/User");
 
 // @route     GET api/users/test
 // @desc      Test user route
@@ -119,7 +119,7 @@ router.post("/login", (req, res) => {
         jwt.sign(
           payload,
           keys.secretOrKey,
-          { expiresIn: 3600 },
+          { expiresIn: 3000000 },
           (err, token) => {
             res.json({
               success: true,
@@ -189,61 +189,66 @@ router.post("/oauth", async (req, res) => {
 
 // @route     POST api/users/editprofile
 // @desc      Edit user collection
-// @access    Public
-router.post("/editprofile", upload.single("image"), async (req, res) => {
-  // Get fields
-  const userField = {};
-  if (req.body.id) userField.id = req.body.id;
-  if (req.body.name) userField.name = req.body.name;
-  if (req.body.city) userField.city = req.body.city;
-  if (req.body.contactNo) userField.contactNo = req.body.contactNo;
-  if (req.body.facebook) userField.facebook = req.body.facebook;
-  if (req.body.youtube) userField.youtube = req.body.youtube;
-  if (req.body.instagram) userField.instagram = req.body.instagram;
-  if (req.file) {
-    let wait = await cloudinary.uploader.upload(req.file.path, function (
-      error,
-      response
-    ) {
-      if (error) {
-        response.send("err", error);
-      }
-    });
-    userField.image = wait.url;
-  }
+// @access    Private
+router.post(
+  "/editprofile",
+  passport.authenticate("jwt", { session: false }),
+  upload.single("image"),
+  async (req, res) => {
+    // Get fields
+    const userField = {};
+    if (req.body.id) userField.id = req.body.id;
+    if (req.body.name) userField.name = req.body.name;
+    if (req.body.city) userField.city = req.body.city;
+    if (req.body.contactNo) userField.contactNo = req.body.contactNo;
+    if (req.body.facebook) userField.facebook = req.body.facebook;
+    if (req.body.youtube) userField.youtube = req.body.youtube;
+    if (req.body.instagram) userField.instagram = req.body.instagram;
+    if (req.file) {
+      let wait = await cloudinary.uploader.upload(req.file.path, function (
+        error,
+        response
+      ) {
+        if (error) {
+          response.send("err", error);
+        }
+      });
+      userField.image = wait.url;
+    }
 
-  User.findByIdAndUpdate(
-    { _id: userField.id },
-    { $set: userField },
-    { new: true }
-  ).then((user) => {
-    // JWT payload
-    const jwtPayload = {
-      id: user.id,
-      method: user.method,
-      name: user.name,
-      email: user.google.email,
-      image: user.image,
-      city: user.city,
-      contactNo: user.contactNo,
-      facebook: user.facebook,
-      youtube: user.youtube,
-      instagram: user.instagram,
-    };
-    //Sign Token
-    jwt.sign(
-      jwtPayload,
-      keys.secretOrKey,
-      { expiresIn: 3600 },
-      (err, token) => {
-        res.json({
-          success: true,
-          token: "Bearer " + token,
-        });
-      }
-    );
-  });
-});
+    User.findByIdAndUpdate(
+      { _id: userField.id },
+      { $set: userField },
+      { new: true }
+    ).then((user) => {
+      // JWT payload
+      const jwtPayload = {
+        id: user.id,
+        method: user.method,
+        name: user.name,
+        email: user.google.email,
+        image: user.image,
+        city: user.city,
+        contactNo: user.contactNo,
+        facebook: user.facebook,
+        youtube: user.youtube,
+        instagram: user.instagram,
+      };
+      //Sign Token
+      jwt.sign(
+        jwtPayload,
+        keys.secretOrKey,
+        { expiresIn: 3600 },
+        (err, token) => {
+          res.json({
+            success: true,
+            token: "Bearer " + token,
+          });
+        }
+      );
+    });
+  }
+);
 
 // @route     GET api/users/current
 // @desc      Return Current User
