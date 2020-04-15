@@ -179,12 +179,17 @@ router.post("/oauth", async (req, res) => {
     instagram: payId.instagram,
   };
   //Sign Token
-  jwt.sign(jwtPayload, keys.secretOrKey, { expiresIn: 3600 }, (err, token) => {
-    res.json({
-      success: true,
-      token: "Bearer " + token,
-    });
-  });
+  jwt.sign(
+    jwtPayload,
+    keys.secretOrKey,
+    { expiresIn: 3000000 },
+    (err, token) => {
+      res.json({
+        success: true,
+        token: "Bearer " + token,
+      });
+    }
+  );
 });
 
 // @route     POST api/users/editprofile
@@ -238,7 +243,7 @@ router.post(
       jwt.sign(
         jwtPayload,
         keys.secretOrKey,
-        { expiresIn: 3600 },
+        { expiresIn: 3000000 },
         (err, token) => {
           res.json({
             success: true,

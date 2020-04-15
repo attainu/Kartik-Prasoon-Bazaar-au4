@@ -33,8 +33,8 @@ cloudinary.config({
 // @access    Public
 router.get("/test", (req, res) => res.json({ msg: "Product Route Works" }));
 
-// @route     POST api/users/register
-// @desc      Register User
+// @route     POST api/products/addproduct
+// @desc      Add new product
 // @access    Private
 router.post(
   "/addproduct",
@@ -79,12 +79,10 @@ router.post(
         images.push(wait.url);
         if (images.length === req.files.length) {
           newProduct.photos = images;
-          console.log("image", newProduct);
           saveProduct(newProduct);
         }
       });
     } else {
-      console.log("No image", newProduct);
       saveProduct(newProduct);
     }
   }
