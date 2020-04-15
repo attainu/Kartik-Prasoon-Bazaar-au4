@@ -265,5 +265,17 @@ router.get(
     res.json(req.user);
   }
 );
-
+router.get("/userforad/:id", (req, res) => {
+  User.findById(req.params.id)
+    .then((user) => {
+      if (user) {
+        res.json(user);
+      } else {
+        res.status(404).json({ nouserfound: "no user found with that id" });
+      }
+    })
+    .catch((err) => {
+      res.status(404).json({ nouserfound: "no user found with that id" });
+    });
+});
 module.exports = router;

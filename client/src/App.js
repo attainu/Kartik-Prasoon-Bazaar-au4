@@ -17,6 +17,7 @@ import LoginPage from "./pages/LoginSignUpPage/LoginPage";
 import DashboardPage from "./pages/DashboardPage/DashboardPage";
 import EditProfilePage from "./pages/EditProfilePage/EditProfilePage";
 import PostAdPage from "./pages/PostAdPage/PostAdPage";
+import ProductPage from "./pages/ProductPage/ProductPage";
 
 class App extends React.Component {
   componentDidMount() {
@@ -39,6 +40,7 @@ class App extends React.Component {
         <Route exact path="/results" component={ResultsPage} />
         <Route exact path="/signup" component={SignUpPage} />
         <Route exact path="/login" component={LoginPage} />
+        <Route path="/product" component={ProductPage} />
         <Route exact path="/dashboard" component={RequireAuth(DashboardPage)} />
         <Route
           exact

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+
 import DummyImage from "../../assets/dummyimages/1.jpg";
 class ProductCard extends Component {
   render() {
