@@ -4,6 +4,11 @@ import { withRouter } from "react-router-dom";
 import axios from "axios";
 import { Fragment } from "react";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+
+import { registerUser } from "../../Redux/auth/auth-actions";
+import { selectAuthInfo } from "../../Redux/auth/auth.selector";
 
 class ProductView extends Component {
   state = {
@@ -25,6 +30,19 @@ class ProductView extends Component {
   render() {
     let product = this.state.productData;
     let user = this.state.user;
+    let wishlist = "";
+    let wishlistclass = "";
+    let wishlistbuttonclass = "";
+    console.log(this.props.auth.user.id);
+    if (this.props.auth.user.id === this.state.productData.user) {
+      wishlist = "delete";
+      wishlistbuttonclass = "btn btn-danger mt-3";
+      wishlistclass = "fas fas-trash-alt";
+    } else {
+      wishlist = "add this to wishlist";
+      wishlistbuttonclass = "btn btn-info mt-3";
+      wishlistclass = "fas fa - heart";
+    }
     return (
       <Fragment>
         {/* main component */}
@@ -127,12 +145,12 @@ class ProductView extends Component {
                     </tbody>
                   </table>
 
-                  <button className="btn btn-info mt-3" type="submit">
+                  <button className={wishlistbuttonclass} type="submit">
                     <i
-                      className="fas fa-heart"
+                      className={wishlistclass}
                       style={{ color: "#ffffff" }}
                     ></i>
-                    Add to Wishlist
+                    {wishlist}
                   </button>
                 </div>
                 {/* <!--Content--> */}
@@ -222,4 +240,21 @@ class ProductView extends Component {
     );
   }
 }
-export default withRouter(ProductView);
+
+ProductView.propTypes = {
+  registerUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  auth: selectAuthInfo(state),
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  registerUser: (userData) => dispatch(registerUser(userData)),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(ProductView));
