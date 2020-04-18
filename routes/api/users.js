@@ -255,27 +255,17 @@ router.post(
   }
 );
 
-// @route     GET api/users/current
+// @route     GET api/users/current/:id
 // @desc      Return Current User
 // @access    Private
 router.get(
-  "/current",
+  "/current/:id",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    res.json(req.user);
+    User.findById(req.params.id)
+      .then((user) => res.json(user))
+      .catch((err) => console.log(err));
   }
 );
-router.get("/userforad/:id", (req, res) => {
-  User.findById(req.params.id)
-    .then((user) => {
-      if (user) {
-        res.json(user);
-      } else {
-        res.status(404).json({ nouserfound: "no user found with that id" });
-      }
-    })
-    .catch((err) => {
-      res.status(404).json({ nouserfound: "no user found with that id" });
-    });
-});
+
 module.exports = router;

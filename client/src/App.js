@@ -3,11 +3,13 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import axios from "axios";
 
 import RequireAuth from "./protectedRoutes";
 
 import setAuthToken from "./utils/setAuthToken";
 import { setCurrentUser } from "./Redux/auth/auth-actions";
+import { getMyProducts } from "./Redux/product/product-action";
 
 import MainHeader from "./components/MainHeader/MainHeader.component";
 import HomePage from "./pages/HomePage/Homepage";
@@ -16,6 +18,7 @@ import SignUpPage from "./pages/LoginSignUpPage/SignUpPage";
 import LoginPage from "./pages/LoginSignUpPage/LoginPage";
 import DashboardPage from "./pages/DashboardPage/DashboardPage";
 import EditProfilePage from "./pages/EditProfilePage/EditProfilePage";
+import MyAdsPage from "./pages/MyAdsPage/MyAdsPage";
 import PostAdPage from "./pages/PostAdPage/PostAdPage";
 import ProductPage from "./pages/ProductPage/ProductPage";
 
@@ -29,6 +32,10 @@ class App extends React.Component {
       const decode = jwt_decode(localStorage.jwtToken);
       // Set user and isAuthenticated
       this.props.setCurrentUser(decode);
+      // Add My products to state
+      axios
+        .get(`api/users/current/${decode.id}`)
+        .then((user) => this.props.getMyProducts(user.data.myProducts));
     }
   }
 
@@ -47,6 +54,7 @@ class App extends React.Component {
           path="/editprofile"
           component={RequireAuth(EditProfilePage)}
         />
+        <Route exact path="/myads" component={RequireAuth(MyAdsPage)} />
         <Route exact path="/postad" component={RequireAuth(PostAdPage)} />
         <footer className="bg-dark text-white mt-5 p-4 text-center">
           Copyright &copy; 2020 Bazaar
@@ -58,10 +66,12 @@ class App extends React.Component {
 
 App.propTypes = {
   setCurrentUser: PropTypes.func.isRequired,
+  getMyProducts: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   setCurrentUser: (userData) => dispatch(setCurrentUser(userData)),
+  getMyProducts: (data) => dispatch(getMyProducts(data)),
 });
 
 export default connect(null, mapDispatchToProps)(App);

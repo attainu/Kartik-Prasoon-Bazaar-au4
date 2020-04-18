@@ -7,6 +7,7 @@ const multer = require("multer");
 
 // Load Product Model
 const Product = require("../../models/Product");
+const User = require("../../models/User");
 
 // Load Input Validation
 const validateProductInput = require("../../validation/add-product");
@@ -27,6 +28,11 @@ cloudinary.config({
   api_key: keys.cloudinaryKey.api_key,
   api_secret: keys.cloudinaryKey.api_secret,
 });
+
+// @route     GET api/products/test
+// @desc      Test user route
+// @access    Public
+router.get("/test", (req, res) => res.json({ msg: "Product Route Works" }));
 
 // @route     GET api/products/
 // @desc      Render all products from date
@@ -54,6 +60,7 @@ router.get("/singleproduct/:id", (req, res) => {
       res.status(404).json({ nopostfound: "No post found with that ID" })
     );
 });
+
 // @route     POST api/products/addproduct
 // @desc      Add new product
 // @access    Private
@@ -82,8 +89,16 @@ router.post(
       let newPro = new Product(product);
       newPro
         .save()
-        .then((savedProduct) => res.json(savedProduct))
-        .catch((error) => console.log(err));
+        .then((savedProduct) => {
+          User.findByIdAndUpdate(
+            { _id: savedProduct.user },
+            { $push: { myProducts: savedProduct._id } },
+            { new: true }
+          )
+            .then((user) => res.json(user))
+            .catch((error) => console.log(error));
+        })
+        .catch((error) => console.log(error));
     };
 
     if (req.files.length > 0) {

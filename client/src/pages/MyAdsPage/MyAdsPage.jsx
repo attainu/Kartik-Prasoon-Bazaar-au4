@@ -1,0 +1,68 @@
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
+import axios from "axios";
+
+import { selectProductInfo } from "../../Redux/product/product-selector";
+import { getMyProducts } from "../../Redux/product/product-action";
+import { selectAuthInfo } from "../../Redux/auth/auth.selector";
+
+import ProductCard from "../../components/ProductCard/ProductCard.component";
+
+class MyAdsPage extends Component {
+  componentDidMount() {
+    axios
+      .get(`api/users/current/${this.props.auth.user.id}`)
+      .then((user) => this.props.getMyProducts(user.data.myProducts));
+  }
+
+  render() {
+    return (
+      <div>
+        <div className="create-profile mt-5">
+          <div className="container">
+            <div className="row">
+              <div className="col-md-8 m-auto">
+                <Link to="/dashboard" className="btn btn-light">
+                  Go Back / Dashboard
+                </Link>
+                <h1 className="display-4 text-center">My Ads</h1>
+                <p className="lead text-center">
+                  Give good description for better sales.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br />
+        <div className="row col-11 container-fluid justify-content-start mx-auto">
+          {this.props.product.myProducts.length > 0
+            ? this.props.product.myProducts.map((product) => (
+                <ProductCard product={product} />
+              ))
+            : ""}
+        </div>
+      </div>
+    );
+  }
+}
+
+MyAdsPage.propTypes = {
+  product: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  product: selectProductInfo(state),
+  auth: selectAuthInfo(state),
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  getMyProducts: (data) => dispatch(getMyProducts(data)),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(MyAdsPage));

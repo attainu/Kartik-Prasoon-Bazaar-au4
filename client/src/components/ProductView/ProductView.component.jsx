@@ -3,6 +3,7 @@ import queryString from "query-string";
 import { withRouter } from "react-router-dom";
 import axios from "axios";
 import { Fragment } from "react";
+import { Link } from "react-router-dom";
 
 class ProductView extends Component {
   state = {
@@ -14,12 +15,16 @@ class ProductView extends Component {
     console.log(this.props);
     const value = queryString.parse(this.props.history.location.search);
     console.log(value);
-    axios
-      .get(`/api/products/singleproduct/${value.id}`)
-      .then((product) => this.setState({ productData: product.data }));
+    axios.get(`/api/products/singleproduct/${value.id}`).then((product) => {
+      axios
+        .get(`/api/users/current/${product.data.user}`)
+        .then((user) => this.setState({ user: user.data }));
+      this.setState({ productData: product.data });
+    });
   }
   render() {
-    console.log(this.state);
+    let product = this.state.productData;
+    let user = this.state.user;
     return (
       <Fragment>
         {/* main component */}
@@ -47,43 +52,23 @@ class ProductView extends Component {
                     ></li>
                   </ol>
                   <div className="carousel-inner">
-                    <div className="carousel-item active">
-                      <img
-                        className="d-block w-100"
-                        src={
-                          !this.state.productData.photos
-                            ? ""
-                            : this.state.productData.photos[0]
-                        }
-                        alt="First slide"
-                      />
-                    </div>
-                    {!this.state.productData.photos ? (
-                      ""
-                    ) : !this.state.productData.photos[1] ? (
-                      ""
-                    ) : (
-                      <div className="carousel-item">
-                        <img
-                          className="d-block w-100"
-                          src={this.state.productData.photos[1]}
-                          alt="Second slide"
-                        />
-                      </div>
-                    )}
-                    {!this.state.productData.photos ? (
-                      ""
-                    ) : !this.state.productData.photos[2] ? (
-                      ""
-                    ) : (
-                      <div className="carousel-item">
-                        <img
-                          className="d-block w-100"
-                          src={this.state.productData.photos[2]}
-                          alt="third slide"
-                        />
-                      </div>
-                    )}
+                    {!product.photos
+                      ? ""
+                      : product.photos.map((photo, index) => (
+                          <div
+                            className={
+                              index === 0
+                                ? "carousel-item active"
+                                : "carousel-item "
+                            }
+                          >
+                            <img
+                              className="d-block w-100"
+                              src={photo}
+                              alt={index}
+                            />
+                          </div>
+                        ))}
                   </div>
                   <a
                     className="carousel-control-prev"
@@ -119,11 +104,9 @@ class ProductView extends Component {
                 {/* <!--Content--> */}
                 <div className="p-4 mt-5">
                   <h1 className="font-weight-bold mb-4 display-4">
-                    ₹ {this.state.productData.price}
+                    ₹ {product.price}
                   </h1>
-                  <h2 className="font-weight-bold mb-5">
-                    {this.state.productData.title}
-                  </h2>
+                  <h2 className="font-weight-bold mb-5">{product.title}</h2>
 
                   <table className="table md-5">
                     <tbody>
@@ -132,14 +115,14 @@ class ProductView extends Component {
                           <i className="fas fa-map-marker-alt"></i>
                         </th>
                         <td>Location</td>
-                        <td>{this.state.productData.city}</td>
+                        <td>{product.city}</td>
                       </tr>
                       <tr>
                         <th scope="row">
                           <i className="far fa-calendar-alt"></i>
                         </th>
                         <td>Date</td>
-                        <td>12/12/12</td>
+                        <td>{Date(product.date).slice(0, 15)}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -166,7 +149,7 @@ class ProductView extends Component {
               <div className="col-md-6 text-center">
                 <h4 className="my-4 h4">Description</h4>
 
-                <p>{this.state.productData.description}</p>
+                <p>{product.description}</p>
               </div>
               {/* <!--Grid column--> */}
             </div>
@@ -186,19 +169,45 @@ class ProductView extends Component {
                     </div>
                     <div className="col-md-6">
                       <h2 className="text-center">Seller Info</h2>
-                      <h4 className="text-center">My Name</h4>
-                      <p className="text-center">My@email.com</p>
-                      <p className="text-center">+91 1234567890</p>
+                      <h4 className="text-center">{user.name}</h4>
+                      <p className="text-center">{user.email}</p>
                       <p className="text-center">
-                        <a className="text-white p-2" href="#">
-                          <i className="fab fa-facebook fa-2x"></i>
-                        </a>
-                        <a className="text-white p-2" href="#">
-                          <i className="fab fa-youtube fa-2x"></i>
-                        </a>
-                        <a className="text-white p-2" href="#">
-                          <i className="fab fa-instagram fa-2x"></i>
-                        </a>
+                        {!user.contactNo ? `` : `+91 ${user.contactNo}`}
+                      </p>
+                      <p className="text-center">
+                        {!user.city ? `` : `${user.city}`}
+                      </p>
+                      <p className="text-center">
+                        {user.facebook ? (
+                          <Link to={user.facebook} className="text-white p-2">
+                            <i className="fab fa-facebook fa-2x"></i>
+                          </Link>
+                        ) : (
+                          <i
+                            className="fab fa-facebook fa-2x p-2"
+                            style={{ color: "#bbbbbb" }}
+                          ></i>
+                        )}
+                        {user.youtube ? (
+                          <Link to={user.youtube} className="text-white p-2">
+                            <i className="fab fa-youtube fa-2x"></i>
+                          </Link>
+                        ) : (
+                          <i
+                            className="fab fa-youtube fa-2x p-2"
+                            style={{ color: "#bbbbbb" }}
+                          ></i>
+                        )}
+                        {user.instagram ? (
+                          <Link to={user.instagram} className="text-white p-2">
+                            <i className="fab fa-instagram fa-2x"></i>
+                          </Link>
+                        ) : (
+                          <i
+                            className="fab fa-instagram fa-2x p-2"
+                            style={{ color: "#bbbbbb" }}
+                          ></i>
+                        )}
                       </p>
                     </div>
                   </div>

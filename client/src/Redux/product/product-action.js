@@ -1,9 +1,9 @@
 import axios from "axios";
 
 import { GET_ERRORS } from "./product-types";
+import { GET_MY_PRODUCTS } from "./product-types";
 
 export const addProduct = (data) => (dispatch) => {
-  console.log(data);
   axios
     .post("/api/products/addproduct", data.newProduct)
     .then((res) => data.history.push("/dashboard"))
@@ -14,4 +14,22 @@ export const addProduct = (data) => (dispatch) => {
         payload: err.response.data,
       });
     });
+};
+
+export const getMyProducts = (data) => (dispatch) => {
+  let products = [];
+  data.map((val) => {
+    axios
+      .get(`/api/products/singleproduct/${val}`)
+      .then((res) => {
+        products.push(res.data);
+        if (data.length === products.length) {
+          dispatch({
+            type: GET_MY_PRODUCTS,
+            payload: products,
+          });
+        }
+      })
+      .catch((err) => console.log(err));
+  });
 };

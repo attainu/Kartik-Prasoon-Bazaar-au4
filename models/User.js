@@ -45,6 +45,9 @@ const UserSchema = new Schema({
   instagram: {
     type: String,
   },
+  myProducts: {
+    type: [String],
+  },
   date: {
     type: Date,
     default: Date.now,
