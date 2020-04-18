@@ -30,18 +30,27 @@ class ProductView extends Component {
   render() {
     let product = this.state.productData;
     let user = this.state.user;
-    let wishlist = "";
-    let wishlistclass = "";
-    let wishlistbuttonclass = "";
+    let userorowner = "user";
+    let buttononecontent = "";
+    let buttontwocontent = "";
+    let fontawesomeone = "";
+    let fontawesometwo = "";
+    let buttononeclass = "";
+    let buttontwoclass = "";
     console.log(this.props.auth.user.id);
     if (this.props.auth.user.id === this.state.productData.user) {
-      wishlist = "delete";
-      wishlistbuttonclass = "btn btn-danger mt-3";
-      wishlistclass = "fas fas-trash-alt";
+      userorowner = "owner";
+      buttononecontent = "delete";
+      buttononeclass = "btn btn-danger mt-3 ";
+      fontawesomeone = "fas fa-trash";
+      buttontwocontent = "edit";
+      buttontwoclass = "btn btn-primary mt-3 ml-3";
+      fontawesometwo = "fas fa-edit";
     } else {
-      wishlist = "add this to wishlist";
-      wishlistbuttonclass = "btn btn-info mt-3";
-      wishlistclass = "fas fa - heart";
+      userorowner = "user";
+      buttononecontent = "add to wishlist";
+      buttononeclass = "btn btn-info mt-3";
+      fontawesomeone = "fas fa-heart";
     }
     return (
       <Fragment>
@@ -145,13 +154,24 @@ class ProductView extends Component {
                     </tbody>
                   </table>
 
-                  <button className={wishlistbuttonclass} type="submit">
+                  <button className={buttononeclass} type="submit">
                     <i
-                      className={wishlistclass}
+                      className={fontawesomeone}
                       style={{ color: "#ffffff" }}
                     ></i>
-                    {wishlist}
+                    {buttononecontent}
                   </button>
+                  {userorowner == "owner" ? (
+                    <button className={buttontwoclass} type="submit">
+                      <i
+                        className={fontawesometwo}
+                        style={{ color: "#ffffff" }}
+                      ></i>
+                      {buttontwocontent}
+                    </button>
+                  ) : (
+                    ""
+                  )}
                 </div>
                 {/* <!--Content--> */}
               </div>
