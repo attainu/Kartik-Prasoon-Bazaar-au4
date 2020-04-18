@@ -40,15 +40,15 @@ class ProductView extends Component {
     console.log(this.props.auth.user.id);
     if (this.props.auth.user.id === this.state.productData.user) {
       userorowner = "owner";
-      buttononecontent = "delete";
+      buttononecontent = " delete";
       buttononeclass = "btn btn-danger mt-3 ";
       fontawesomeone = "fas fa-trash";
-      buttontwocontent = "edit";
+      buttontwocontent = " edit";
       buttontwoclass = "btn btn-primary mt-3 ml-3";
       fontawesometwo = "fas fa-edit";
     } else {
       userorowner = "user";
-      buttononecontent = "add to wishlist";
+      buttononecontent = " add to wishlist";
       buttononeclass = "btn btn-info mt-3";
       fontawesomeone = "fas fa-heart";
     }
@@ -161,7 +161,7 @@ class ProductView extends Component {
                     ></i>
                     {buttononecontent}
                   </button>
-                  {userorowner == "owner" ? (
+                  {userorowner === "owner" ? (
                     <button className={buttontwoclass} type="submit">
                       <i
                         className={fontawesometwo}

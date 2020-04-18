@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 
-import DummyImage from "../../assets/dummyimages/1.jpg";
 class ProductCard extends Component {
   render() {
-    console.log(this.props.product);
+    console.log(this.props);
     return (
       <div className="col-12 col-sm-6 col-md-4 col-lg-3 mt-3 mb-3">
         <div
@@ -33,8 +32,8 @@ class ProductCard extends Component {
               </div>
             </div>
             <div className="d-flex justify-content-between">
-              <button className="btn btn-outline-info col-5">Edit</button>
-              <button className="btn btn-outline-danger col-5">Delete</button>
+              <button className="btn btn-outline-info col-5">edit</button>
+              <button className="btn btn-outline-danger col-5">delete</button>
             </div>
           </div>
         </div>

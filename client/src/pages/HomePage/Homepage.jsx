@@ -1,5 +1,5 @@
 import React from "react";
-//import axios from "axios";
+import axios from "axios";
 
 import SecondaryHeader from "../../components/SecondaryHeader/SecondaryHeader.component";
 import Carousel from "../../components/Carousel/Carousel.component";
@@ -10,17 +10,17 @@ class HomePage extends React.Component {
     productsHomePage: [],
   };
 
-  componentDidMount() {
-    // axios
-    //   .get("/api/products/allproducts")
-    //   .then((res) => {
-    //     console.log(res);
-    //     return res.json();
-    //   })
-    //   .then((data) => {
-    //     this.setState({ productsHomePage: data });
-    //   })
-    //   .catch(console.log);
+  async componentDidMount() {
+    try {
+      let res = await axios.get("/api/products/allproducts");
+      console.log(res);
+      this.setState({
+        productsHomePage: res.data,
+      });
+      console.log(this.state.productsHomePage);
+    } catch (error) {
+      console.log(error);
+    }
   }
   render() {
     return (
@@ -29,19 +29,9 @@ class HomePage extends React.Component {
         <Carousel />
         <br />
         <div className="row col-11 container-fluid justify-content-start mx-auto">
-          {/* <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard /> */}
+          {this.state.productsHomePage.map((product, index) => (
+            <ProductCard key={index} product={product} />
+          ))}
         </div>
       </div>
     );
