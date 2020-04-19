@@ -259,7 +259,7 @@ router.post(
 // @desc      Return Current User
 // @access    Private
 router.get(
-  "/current/:id",
+  "/current/:page",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     User.findById(req.params.id)

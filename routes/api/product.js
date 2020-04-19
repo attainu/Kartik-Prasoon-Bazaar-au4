@@ -38,9 +38,15 @@ router.get("/test", (req, res) => res.json({ msg: "Product Route Works" }));
 // @desc      Render all products from date
 // @access    Public
 router.get("/allproducts", (req, res) => {
+  const page = req.query.page;
+  const startIndex = (page - 1) * 8;
+  const endIndex = page * 8;
   Product.find()
     .sort({ date: -1 })
-    .then((products) => res.json(products))
+    .then((products) => {
+      const tenProducts = products.slice(startIndex, endIndex);
+      res.json(tenProducts);
+    })
     .catch((err) => res.status(404).json({ nopostsfound: "No posts found" }));
 });
 

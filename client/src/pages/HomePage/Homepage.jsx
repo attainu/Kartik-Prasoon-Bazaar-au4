@@ -4,6 +4,7 @@ import axios from "axios";
 import SecondaryHeader from "../../components/SecondaryHeader/SecondaryHeader.component";
 import Carousel from "../../components/Carousel/Carousel.component";
 import ProductCard from "../../components/ProductCard/ProductCard.component";
+import Pagination from "../../components/Pagination/Pagination.component";
 
 class HomePage extends React.Component {
   state = {
@@ -33,6 +34,7 @@ class HomePage extends React.Component {
             <ProductCard key={index} product={product} />
           ))}
         </div>
+        <Pagination />
       </div>
     );
   }
