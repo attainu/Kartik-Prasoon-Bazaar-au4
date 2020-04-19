@@ -24,7 +24,7 @@ class MyAdsPage extends Component {
 
   onDelete = (event) => {
     axios
-      .post(`api/products/deleteproduct`, {
+      .post(`/api/products/deleteproduct`, {
         id: event.target.id,
         userId: event.target.getAttribute("userid"),
       })

@@ -17,41 +17,31 @@ class ProductView extends Component {
   };
 
   componentDidMount() {
-    console.log(this.props);
     const value = queryString.parse(this.props.history.location.search);
-    console.log(value);
-    axios.get(`/api/products/singleproduct/${value.id}`).then((product) => {
-      axios
-        .get(`/api/users/current/${product.data.user}`)
-        .then((user) => this.setState({ user: user.data }));
-      this.setState({ productData: product.data });
-    });
+    axios
+      .get(`/api/products/singleproduct/${value.id}`)
+      .then((product) => {
+        axios
+          .get(`/api/users/current/${product.data.user}`)
+          .then((user) => this.setState({ user: user.data }));
+        this.setState({ productData: product.data });
+      })
+      .catch((err) => this.props.history.push("/"));
   }
+
+  onDelete = (event) => {
+    axios
+      .post(`/api/products/deleteproduct`, {
+        id: event.target.id,
+        userId: event.target.getAttribute("userid"),
+      })
+      .then((res) => this.props.history.push("/myads"))
+      .catch((err) => console.log(err));
+  };
+
   render() {
     let product = this.state.productData;
     let user = this.state.user;
-    let userorowner = "user";
-    let buttononecontent = "";
-    let buttontwocontent = "";
-    let fontawesomeone = "";
-    let fontawesometwo = "";
-    let buttononeclass = "";
-    let buttontwoclass = "";
-    console.log(this.props.auth.user.id);
-    if (this.props.auth.user.id === this.state.productData.user) {
-      userorowner = "owner";
-      buttononecontent = " delete";
-      buttononeclass = "btn btn-danger mt-3 ";
-      fontawesomeone = "fas fa-trash";
-      buttontwocontent = " edit";
-      buttontwoclass = "btn btn-primary mt-3 ml-3";
-      fontawesometwo = "fas fa-edit";
-    } else {
-      userorowner = "user";
-      buttononecontent = " add to wishlist";
-      buttononeclass = "btn btn-info mt-3";
-      fontawesomeone = "fas fa-heart";
-    }
     return (
       <Fragment>
         {/* main component */}
@@ -83,6 +73,7 @@ class ProductView extends Component {
                       ? ""
                       : product.photos.map((photo, index) => (
                           <div
+                            key={index}
                             className={
                               index === 0
                                 ? "carousel-item active"
@@ -153,24 +144,38 @@ class ProductView extends Component {
                       </tr>
                     </tbody>
                   </table>
-
-                  <button className={buttononeclass} type="submit">
-                    <i
-                      className={fontawesomeone}
-                      style={{ color: "#ffffff" }}
-                    ></i>
-                    {buttononecontent}
-                  </button>
-                  {userorowner === "owner" ? (
-                    <button className={buttontwoclass} type="submit">
+                  {this.props.auth.user.id === this.state.productData.user ? (
+                    <div>
+                      <button
+                        className="btn btn-danger mt-3"
+                        onClick={this.onDelete}
+                        id={product._id}
+                        userid={user._id}
+                      >
+                        <i
+                          className="fas fa-trash"
+                          style={{ color: "#ffffff" }}
+                        ></i>
+                        {` `}delete
+                      </button>
+                      <Link to={`/editmyad/?id=${product._id}`}>
+                        <button className="btn btn-primary mt-3 ml-3">
+                          <i
+                            className="fas fa-edit"
+                            style={{ color: "#ffffff" }}
+                          ></i>
+                          {` `}edit
+                        </button>
+                      </Link>
+                    </div>
+                  ) : (
+                    <button className="btn btn-info mt-3" type="submit">
                       <i
-                        className={fontawesometwo}
+                        className="fas fa-heart"
                         style={{ color: "#ffffff" }}
                       ></i>
-                      {buttontwocontent}
+                      {` `}add to wishlist
                     </button>
-                  ) : (
-                    ""
                   )}
                 </div>
                 {/* <!--Content--> */}
@@ -262,7 +267,6 @@ class ProductView extends Component {
 }
 
 ProductView.propTypes = {
-  registerUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
 };
 
@@ -270,9 +274,7 @@ const mapStateToProps = (state) => ({
   auth: selectAuthInfo(state),
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  registerUser: (userData) => dispatch(registerUser(userData)),
-});
+const mapDispatchToProps = (dispatch) => ({});
 
 export default connect(
   mapStateToProps,

@@ -21,6 +21,7 @@ import EditProfilePage from "./pages/EditProfilePage/EditProfilePage";
 import MyAdsPage from "./pages/MyAdsPage/MyAdsPage";
 import PostAdPage from "./pages/PostAdPage/PostAdPage";
 import ProductPage from "./pages/ProductPage/ProductPage";
+import EditMyAdPage from "./pages/EditMyAdPage/EditMyAdPage";
 
 class App extends React.Component {
   componentDidMount() {
@@ -55,6 +56,7 @@ class App extends React.Component {
           component={RequireAuth(EditProfilePage)}
         />
         <Route exact path="/myads" component={RequireAuth(MyAdsPage)} />
+        <Route exact path="/editmyad" component={RequireAuth(EditMyAdPage)} />
         <Route exact path="/postad" component={RequireAuth(PostAdPage)} />
         <footer className="bg-dark text-white mt-5 p-4 text-center">
           Copyright &copy; 2020 Bazaar

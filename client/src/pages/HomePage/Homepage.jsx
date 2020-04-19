@@ -13,11 +13,9 @@ class HomePage extends React.Component {
   async componentDidMount() {
     try {
       let res = await axios.get("/api/products/allproducts");
-      console.log(res);
       this.setState({
         productsHomePage: res.data,
       });
-      console.log(this.state.productsHomePage);
     } catch (error) {
       console.log(error);
     }

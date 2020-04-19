@@ -133,41 +133,71 @@ router.post(
   upload.array("image"),
   async (req, res) => {
     let { errors, isValid } = validateProductInput(req);
-
+    if (errors.image1) {
+      delete errors.image1;
+      if (Object.keys(errors).length === 0) {
+        isValid = true;
+      }
+    }
     //Check Validation
     if (!isValid) {
       return res.status(400).json(errors);
     }
     // Get Fields
     const editProduct = {
-      user: req.body.id,
       title: req.body.title,
       category: req.body.category,
       city: req.body.city,
       price: req.body.price,
       description: req.body.description,
     };
+    // save product
+    const newEditProduct = (product) => {
+      Product.findByIdAndUpdate(
+        { _id: req.body.id },
+        { $set: product },
+        { new: true }
+      )
+        .then((product) => res.json(product))
+        .catch((err) => console.log(err));
+    };
+    if (req.files[0] !== "") {
+      let images = [];
+      req.files.map(async (val, ind) => {
+        let wait = await cloudinary.uploader.upload(val.path, function (
+          error,
+          response
+        ) {
+          if (error) {
+            console.log("err", error);
+          }
+        });
+        images.push(wait.url);
+        if (images.length === req.files.length) {
+          editProduct.photos = images;
+          newEditProduct(editProduct);
+        }
+      });
+    } else {
+      newEditProduct(editProduct);
+    }
   }
 );
 
 // @route     POST api/products/deleteproduct
 // @desc      Delete Product
 // @access    Private
-router.post(
-  "/deleteproduct",
-  passport.authenticate("jwt", { session: false }),
-  async (req, res) => {
-    Product.remove({ _id: req.body.id }, (err) => {
-      if (!err) {
-        User.updateOne(
-          { _id: req.body.userId },
-          { $pullAll: { myProducts: [req.body.id] } }
-        ).then((user) => res.json({ msg: "done" }));
-      } else {
-        console.log(err);
-      }
-    });
-  }
-);
+router.post("/deleteproduct", async (req, res) => {
+  Product.remove({ _id: req.body.id }, (err) => {
+    if (!err) {
+      User.updateOne(
+        { _id: req.body.userId },
+        { $pullAll: { myProducts: [req.body.id] } }
+      ).then((user) => res.json({ msg: "done" }));
+    } else {
+      console.log(err);
+    }
+  });
+});
 
 module.exports = router;
