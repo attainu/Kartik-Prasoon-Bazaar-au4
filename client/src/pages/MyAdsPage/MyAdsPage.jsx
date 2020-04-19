@@ -18,6 +18,19 @@ class MyAdsPage extends Component {
       .then((user) => this.props.getMyProducts(user.data.myProducts));
   }
 
+  onClick = (event) => {
+    this.props.history.push(`/product/?id=${event.target.id}`);
+  };
+
+  onDelete = (event) => {
+    axios
+      .post(`api/products/deleteproduct`, {
+        id: event.target.id,
+        userId: event.target.getAttribute("userid"),
+      })
+      .then((res) => window.location.reload());
+  };
+
   render() {
     return (
       <div>
@@ -39,8 +52,13 @@ class MyAdsPage extends Component {
         <br />
         <div className="row col-11 container-fluid justify-content-start mx-auto">
           {this.props.product.myProducts.length > 0
-            ? this.props.product.myProducts.map((product) => (
-                <ProductCard product={product} />
+            ? this.props.product.myProducts.map((product, index) => (
+                <ProductCard
+                  key={index}
+                  product={product}
+                  onClick={this.onClick}
+                  onDelete={this.onDelete}
+                />
               ))
             : ""}
         </div>

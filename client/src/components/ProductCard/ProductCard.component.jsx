@@ -2,7 +2,6 @@ import React, { Component } from "react";
 
 class ProductCard extends Component {
   render() {
-    console.log(this.props);
     return (
       <div className="col-12 col-sm-6 col-md-4 col-lg-3 mt-3 mb-3">
         <div
@@ -32,8 +31,25 @@ class ProductCard extends Component {
               </div>
             </div>
             <div className="d-flex justify-content-between">
-              <button className="btn btn-outline-info col-5">edit</button>
-              <button className="btn btn-outline-danger col-5">delete</button>
+              <button
+                className="btn btn-outline-info col-5"
+                id={this.props.product._id}
+                onClick={this.props.onClick}
+              >
+                More Info
+              </button>
+              {!this.props.onDelete ? (
+                ""
+              ) : (
+                <button
+                  className="btn btn-outline-danger col-5"
+                  id={this.props.product._id}
+                  userid={this.props.product.user}
+                  onClick={this.props.onDelete}
+                >
+                  delete
+                </button>
+              )}
             </div>
           </div>
         </div>

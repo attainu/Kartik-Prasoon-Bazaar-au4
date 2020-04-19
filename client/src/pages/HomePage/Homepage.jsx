@@ -22,6 +22,12 @@ class HomePage extends React.Component {
       console.log(error);
     }
   }
+
+  onClick = (event) => {
+    console.log("asdgvsdfgsdf");
+    this.props.history.push(`/product/?id=${event.target.id}`);
+  };
+
   render() {
     return (
       <div>
@@ -30,7 +36,7 @@ class HomePage extends React.Component {
         <br />
         <div className="row col-11 container-fluid justify-content-start mx-auto">
           {this.state.productsHomePage.map((product, index) => (
-            <ProductCard key={index} product={product} />
+            <ProductCard key={index} product={product} onClick={this.onClick} />
           ))}
         </div>
       </div>

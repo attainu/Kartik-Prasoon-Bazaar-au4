@@ -69,7 +69,7 @@ router.post(
   passport.authenticate("jwt", { session: false }),
   upload.array("image"),
   async (req, res) => {
-    const { errors, isValid } = validateProductInput(req);
+    let { errors, isValid } = validateProductInput(req);
 
     //Check Validation
     if (!isValid) {
@@ -121,6 +121,52 @@ router.post(
     } else {
       saveProduct(newProduct);
     }
+  }
+);
+
+// @route     POST api/products/editproduct
+// @desc      Edit Product
+// @access    Private
+router.post(
+  "/editproduct",
+  passport.authenticate("jwt", { session: false }),
+  upload.array("image"),
+  async (req, res) => {
+    let { errors, isValid } = validateProductInput(req);
+
+    //Check Validation
+    if (!isValid) {
+      return res.status(400).json(errors);
+    }
+    // Get Fields
+    const editProduct = {
+      user: req.body.id,
+      title: req.body.title,
+      category: req.body.category,
+      city: req.body.city,
+      price: req.body.price,
+      description: req.body.description,
+    };
+  }
+);
+
+// @route     POST api/products/deleteproduct
+// @desc      Delete Product
+// @access    Private
+router.post(
+  "/deleteproduct",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    Product.remove({ _id: req.body.id }, (err) => {
+      if (!err) {
+        User.updateOne(
+          { _id: req.body.userId },
+          { $pullAll: { myProducts: [req.body.id] } }
+        ).then((user) => res.json({ msg: "done" }));
+      } else {
+        console.log(err);
+      }
+    });
   }
 );
 
