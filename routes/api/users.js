@@ -202,7 +202,6 @@ router.post(
   async (req, res) => {
     // Get fields
     const userField = {};
-    if (req.body.id) userField.id = req.body.id;
     if (req.body.name) userField.name = req.body.name;
     if (req.body.city) userField.city = req.body.city;
     if (req.body.contactNo) userField.contactNo = req.body.contactNo;
@@ -222,7 +221,7 @@ router.post(
     }
 
     User.findByIdAndUpdate(
-      { _id: userField.id },
+      { _id: req.body.id },
       { $set: userField },
       { new: true }
     ).then((user) => {
