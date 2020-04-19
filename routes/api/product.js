@@ -37,8 +37,8 @@ router.get("/test", (req, res) => res.json({ msg: "Product Route Works" }));
 // @route     GET api/products/
 // @desc      Render all products from date
 // @access    Public
-router.get("/allproducts", (req, res) => {
-  const page = req.query.page;
+router.get("/allproducts/:page", (req, res) => {
+  const page = req.params.page;
   const startIndex = (page - 1) * 8;
   const endIndex = page * 8;
   Product.find()
