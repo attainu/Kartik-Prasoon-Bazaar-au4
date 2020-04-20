@@ -39,8 +39,8 @@ router.get("/test", (req, res) => res.json({ msg: "Product Route Works" }));
 // @access    Public
 router.get("/allproducts/:page", (req, res) => {
   const page = req.params.page;
-  const startIndex = (page - 1) * 8;
-  const endIndex = page * 8;
+  const startIndex = (page - 1) * 20;
+  const endIndex = page * 20;
   Product.find()
     .sort({ date: -1 })
     .then((products) => {
@@ -193,17 +193,21 @@ router.post(
 // @route     POST api/products/deleteproduct
 // @desc      Delete Product
 // @access    Private
-router.post("/deleteproduct", async (req, res) => {
-  Product.remove({ _id: req.body.id }, (err) => {
-    if (!err) {
-      User.updateOne(
-        { _id: req.body.userId },
-        { $pullAll: { myProducts: [req.body.id] } }
-      ).then((user) => res.json({ msg: "done" }));
-    } else {
-      console.log(err);
-    }
-  });
-});
+router.post(
+  "/deleteproduct",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    Product.remove({ _id: req.body.id }, (err) => {
+      if (!err) {
+        User.updateOne(
+          { _id: req.body.userId },
+          { $pullAll: { myProducts: [req.body.id] } }
+        ).then((user) => res.json({ msg: "done" }));
+      } else {
+        console.log(err);
+      }
+    });
+  }
+);
 
 module.exports = router;

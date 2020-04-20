@@ -255,7 +255,7 @@ router.post(
 );
 
 // @route     GET api/users/current/:id
-// @desc      Return Current User
+// @desc      Return User
 // @access    Private
 router.get(
   "/current/:id",
@@ -263,6 +263,47 @@ router.get(
   (req, res) => {
     User.findById(req.params.id)
       .then((user) => res.json(user))
+      .catch((err) => console.log(err));
+  }
+);
+
+// @route     POST api/users/addtowishlist
+// @desc      Add Product to WishList
+// @access    Private
+router.post(
+  "/addtowishlist",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    User.findById(req.body.id)
+      .then((user) => {
+        if (user.myWishlist.includes(req.body.proId)) {
+          res.json(user);
+        } else {
+          User.findByIdAndUpdate(
+            { _id: req.body.id },
+            { $push: { myWishlist: req.body.proId } },
+            { new: true }
+          )
+            .then((user) => res.json(user))
+            .catch((error) => console.log(error));
+        }
+      })
+      .catch((err) => console.log(err));
+  }
+);
+
+// @route     POST api/users/deleteproductfromwishlist
+// @desc      Delete Product from Wishlist
+// @access    Private
+router.post(
+  "/deleteproductfromwishlist",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    User.updateOne(
+      { _id: req.body.id },
+      { $pullAll: { myWishlist: [req.body.proId] } }
+    )
+      .then((user) => res.json({ msg: "done" }))
       .catch((err) => console.log(err));
   }
 );

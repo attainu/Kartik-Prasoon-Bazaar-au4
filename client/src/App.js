@@ -10,6 +10,7 @@ import RequireAuth from "./protectedRoutes";
 import setAuthToken from "./utils/setAuthToken";
 import { setCurrentUser } from "./Redux/auth/auth-actions";
 import { getMyProducts } from "./Redux/product/product-action";
+import { getWishlist } from "./Redux/wishlist/wishlist-action";
 
 import MainHeader from "./components/MainHeader/MainHeader.component";
 import HomePage from "./pages/HomePage/Homepage";
@@ -22,6 +23,7 @@ import MyAdsPage from "./pages/MyAdsPage/MyAdsPage";
 import PostAdPage from "./pages/PostAdPage/PostAdPage";
 import ProductPage from "./pages/ProductPage/ProductPage";
 import EditMyAdPage from "./pages/EditMyAdPage/EditMyAdPage";
+import WishlistPage from "./pages/WishlistPage/WishlistPage";
 
 class App extends React.Component {
   componentDidMount() {
@@ -35,8 +37,12 @@ class App extends React.Component {
       this.props.setCurrentUser(decode);
       // Add My products to state
       axios
-        .get(`api/users/current/${decode.id}`)
+        .get(`/api/users/current/${decode.id}`)
         .then((user) => this.props.getMyProducts(user.data.myProducts));
+      // Add My Wishlist products to state
+      axios
+        .get(`/api/users/current/${decode.id}`)
+        .then((user) => this.props.getWishlist(user.data.myWishlist));
     }
   }
 
@@ -56,6 +62,7 @@ class App extends React.Component {
           component={RequireAuth(EditProfilePage)}
         />
         <Route exact path="/myads" component={RequireAuth(MyAdsPage)} />
+        <Route exact path="/wishlist" component={RequireAuth(WishlistPage)} />
         <Route exact path="/editmyad" component={RequireAuth(EditMyAdPage)} />
         <Route exact path="/postad" component={RequireAuth(PostAdPage)} />
         <footer className="bg-dark text-white mt-5 p-4 text-center">
@@ -69,11 +76,13 @@ class App extends React.Component {
 App.propTypes = {
   setCurrentUser: PropTypes.func.isRequired,
   getMyProducts: PropTypes.func.isRequired,
+  getWishlist: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   setCurrentUser: (userData) => dispatch(setCurrentUser(userData)),
   getMyProducts: (data) => dispatch(getMyProducts(data)),
+  getWishlist: (data) => dispatch(getWishlist(data)),
 });
 
 export default connect(null, mapDispatchToProps)(App);

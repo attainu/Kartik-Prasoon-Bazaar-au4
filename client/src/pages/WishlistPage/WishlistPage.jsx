@@ -5,45 +5,44 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
-import { selectProductInfo } from "../../Redux/product/product-selector";
-import { getMyProducts } from "../../Redux/product/product-action";
 import { selectAuthInfo } from "../../Redux/auth/auth.selector";
+import { getWishlist } from "../../Redux/wishlist/wishlist-action";
+import { selectWishlistInfo } from "../../Redux/wishlist/wishlist-selector";
 
 import ProductCard from "../../components/ProductCard/ProductCard.component";
 
-class MyAdsPage extends Component {
+class WishlistPage extends Component {
   componentDidMount() {
     axios
-      .get(`api/users/current/${this.props.auth.user.id}`)
-      .then((user) => this.props.getMyProducts(user.data.myProducts));
+      .get(`/api/users/current/${this.props.auth.user.id}`)
+      .then((user) => this.props.getWishlist(user.data.myWishlist));
   }
 
   onClick = (event) => {
     this.props.history.push(`/product/?id=${event.target.id}`);
   };
 
-  onDelete = (event) => {
+  onRemove = (event) => {
+    let data = { id: this.props.auth.user.id, proId: event.target.id };
     axios
-      .post(`/api/products/deleteproduct`, {
-        id: event.target.id,
-        userId: event.target.getAttribute("userid"),
-      })
-      .then((res) => window.location.reload());
+      .post("/api/users/deleteproductfromwishlist", data)
+      .then((res) => window.location.reload())
+      .catch((err) => console.log(err));
   };
 
   render() {
     return (
       <div>
-        <div className="my-ads mt-5">
+        <div className="wishlist mt-5">
           <div className="container">
             <div className="row">
               <div className="col-md-8 m-auto">
                 <Link to="/dashboard" className="btn btn-light">
                   Go Back / Dashboard
                 </Link>
-                <h1 className="display-4 text-center">My Ads</h1>
+                <h1 className="display-4 text-center">My Wishlist</h1>
                 <p className="lead text-center">
-                  Give good description for better sales.
+                  Contact the seller soon before the product is sold out
                 </p>
               </div>
             </div>
@@ -51,13 +50,13 @@ class MyAdsPage extends Component {
         </div>
         <br />
         <div className="row col-11 container-fluid justify-content-start mx-auto">
-          {this.props.product.myProducts.length > 0
-            ? this.props.product.myProducts.map((product, index) => (
+          {this.props.wishlist.myWishlist.length > 0
+            ? this.props.wishlist.myWishlist.map((product, index) => (
                 <ProductCard
                   key={index}
                   product={product}
                   onClick={this.onClick}
-                  onDelete={this.onDelete}
+                  onRemove={this.onRemove}
                 />
               ))
             : ""}
@@ -67,20 +66,20 @@ class MyAdsPage extends Component {
   }
 }
 
-MyAdsPage.propTypes = {
-  product: PropTypes.object.isRequired,
+WishlistPage.propTypes = {
+  getWishlist: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  product: selectProductInfo(state),
   auth: selectAuthInfo(state),
+  wishlist: selectWishlistInfo(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  getMyProducts: (data) => dispatch(getMyProducts(data)),
+  getWishlist: (data) => dispatch(getWishlist(data)),
 });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(MyAdsPage));
+)(withRouter(WishlistPage));

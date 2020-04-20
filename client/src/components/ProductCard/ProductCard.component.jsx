@@ -20,14 +20,18 @@ class ProductCard extends Component {
                 <h4 className="card-title">₹ {this.props.product.price}</h4>
               </div>
               <div className="d-inline-block">
-                <h5 className="card-subtitle text-muted pt-2">Category</h5>
+                <h5 className="card-subtitle text-muted pt-2">
+                  {this.props.product.category}
+                </h5>
               </div>
             </div>
             <div className="mb-3">
               <h6 className="card-text">{this.props.product.title}</h6>
               <div className="d-flex justify-content-between">
                 <span className="card-text">{this.props.product.city}</span>
-                <span className="card-text">12/12/12</span>
+                <span className="card-text">
+                  {Date(this.props.product.date).slice(3, 15)}
+                </span>
               </div>
             </div>
             <div className="d-flex justify-content-between">
@@ -47,7 +51,39 @@ class ProductCard extends Component {
                   userid={this.props.product.user}
                   onClick={this.props.onDelete}
                 >
-                  delete
+                  Delete
+                </button>
+              )}
+              {!this.props.onWishlist ? (
+                ""
+              ) : (
+                <button
+                  className={
+                    this.props.product.user !== this.props.userId
+                      ? "btn btn-outline-success col-5"
+                      : "btn btn-secondary col-5 disabled"
+                  }
+                  id={this.props.product._id}
+                  onClick={
+                    this.props.product.user !== this.props.userId
+                      ? this.props.onWishlist
+                      : null
+                  }
+                >
+                  {this.props.product.user !== this.props.userId
+                    ? "Add to Wishlist"
+                    : "Your Product"}
+                </button>
+              )}
+              {!this.props.onRemove ? (
+                ""
+              ) : (
+                <button
+                  className="btn btn-outline-danger col-5"
+                  id={this.props.product._id}
+                  onClick={this.props.onRemove}
+                >
+                  Remove
                 </button>
               )}
             </div>

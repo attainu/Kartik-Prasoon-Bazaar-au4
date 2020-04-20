@@ -7,8 +7,8 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
-import { registerUser } from "../../Redux/auth/auth-actions";
 import { selectAuthInfo } from "../../Redux/auth/auth.selector";
+import { selectWishlistInfo } from "../../Redux/wishlist/wishlist-selector";
 
 class ProductView extends Component {
   state = {
@@ -39,9 +39,37 @@ class ProductView extends Component {
       .catch((err) => console.log(err));
   };
 
+  onWishlist = (event) => {
+    if (this.props.auth.isAuthenticated) {
+      axios
+        .post("/api/users/addtowishlist", {
+          id: this.props.auth.user.id,
+          proId: event.target.id,
+        })
+        .then((res) => this.props.history.push("/wishlist"))
+        .catch((err) => console.log(err));
+    } else {
+      this.props.history.push("/login");
+    }
+  };
+
+  onRemove = (event) => {
+    let data = { id: this.props.auth.user.id, proId: event.target.id };
+    axios
+      .post("/api/users/deleteproductfromwishlist", data)
+      .then((res) => window.location.reload())
+      .catch((err) => console.log(err));
+  };
+
   render() {
+    let myWish = false;
     let product = this.state.productData;
     let user = this.state.user;
+    this.props.wishlist.myWishlist.map((val) => {
+      if (val._id === product._id) {
+        myWish = true;
+      }
+    });
     return (
       <Fragment>
         {/* main component */}
@@ -130,6 +158,13 @@ class ProductView extends Component {
                     <tbody>
                       <tr>
                         <th scope="row">
+                          <i className="fas fa-list-alt"></i>
+                        </th>
+                        <td>Category</td>
+                        <td>{product.category}</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">
                           <i className="fas fa-map-marker-alt"></i>
                         </th>
                         <td>Location</td>
@@ -168,13 +203,31 @@ class ProductView extends Component {
                         </button>
                       </Link>
                     </div>
+                  ) : myWish ? (
+                    <button
+                      className="btn btn-danger mt-3"
+                      type="submit"
+                      onClick={this.onRemove}
+                      id={product._id}
+                    >
+                      <i
+                        className="fas fa-trash"
+                        style={{ color: "#ffffff" }}
+                      ></i>
+                      {` `}Remove from Wishlist
+                    </button>
                   ) : (
-                    <button className="btn btn-info mt-3" type="submit">
+                    <button
+                      className="btn btn-info mt-3"
+                      type="submit"
+                      onClick={this.onWishlist}
+                      id={product._id}
+                    >
                       <i
                         className="fas fa-heart"
                         style={{ color: "#ffffff" }}
                       ></i>
-                      {` `}add to wishlist
+                      {` `}Add to Wishlist
                     </button>
                   )}
                 </div>
@@ -272,6 +325,7 @@ ProductView.propTypes = {
 
 const mapStateToProps = (state) => ({
   auth: selectAuthInfo(state),
+  wishlist: selectWishlistInfo(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({});
