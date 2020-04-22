@@ -81,7 +81,7 @@ class HomePage extends React.Component {
             />
           ))}
         </div>
-        <Pagination />
+        <Pagination url="/" />
       </div>
     );
   }

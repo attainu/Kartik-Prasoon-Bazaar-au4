@@ -5,6 +5,7 @@ import queryString from "query-string";
 import { withRouter } from "react-router-dom";
 
 import ProductCard from "../../components/ProductCard/ProductCard.component";
+import Pagination from "../../components/Pagination/Pagination.component";
 
 class ResultsPage extends React.Component {
   state = {
@@ -87,7 +88,7 @@ class ResultsPage extends React.Component {
                   className="dropdown-item"
                   onClick={this.onSort}
                   criteria="category"
-                  id="Real Estate"
+                  id="Real-Estate"
                 >
                   Real Estate
                 </button>
@@ -103,7 +104,7 @@ class ResultsPage extends React.Component {
                   className="dropdown-item"
                   onClick={this.onSort}
                   criteria="category"
-                  id="Pet"
+                  id="Fashion"
                 >
                   Fashion
                 </button>
@@ -200,6 +201,8 @@ class ResultsPage extends React.Component {
             />
           ))}
         </div>
+
+        <Pagination url="/results/" />
       </Fragment>
     );
   }

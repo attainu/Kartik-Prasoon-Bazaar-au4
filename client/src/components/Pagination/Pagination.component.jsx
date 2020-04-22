@@ -28,7 +28,7 @@ class Pagination extends Component {
             <li className="page-item">
               <Link
                 className="page-link"
-                to={`/?page=${
+                to={`${this.props.url}?page=${
                   this.state.value.page > 1 ? this.state.value.page - 1 : "1"
                 }`}
                 aria-label="Previous"
@@ -41,7 +41,7 @@ class Pagination extends Component {
               <li className="page-item">
                 <Link
                   className="page-link"
-                  to={`/?page=${this.state.value.page - 1}`}
+                  to={`${this.props.url}?page=${this.state.value.page - 1}`}
                 >
                   {this.state.value.page - 1}
                 </Link>
@@ -59,7 +59,9 @@ class Pagination extends Component {
             <li className="page-item">
               <Link
                 className="page-link"
-                to={`/?page=${parseInt(this.state.value.page) + 1}`}
+                to={`${this.props.url}?page=${
+                  parseInt(this.state.value.page) + 1
+                }`}
               >
                 {parseInt(this.state.value.page) + 1}
               </Link>
@@ -67,7 +69,9 @@ class Pagination extends Component {
             <li className="page-item">
               <Link
                 className="page-link"
-                to={`/?page=${parseInt(this.state.value.page) + 1}`}
+                to={`${this.props.url}?page=${
+                  parseInt(this.state.value.page) + 1
+                }`}
                 aria-label="Next"
               >
                 <span aria-hidden="true">&raquo;</span>

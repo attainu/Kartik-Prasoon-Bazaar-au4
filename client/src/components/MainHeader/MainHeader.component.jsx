@@ -2,16 +2,35 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 
 import { selectAuthInfo } from "../../Redux/auth/auth.selector";
 import { logoutUser } from "../../Redux/auth/auth-actions";
 import Logo from "../../assets/logo/logo-white.png";
 
 class MainHeader extends Component {
+  constructor() {
+    super();
+    this.state = {
+      search: "",
+    };
+  }
+
   onLogoutClick(e) {
     e.preventDefault();
     this.props.logoutUser();
   }
+
+  onSubmit = (event) => {
+    event.preventDefault();
+    const data = this.state.search;
+    this.props.history.push(`/results/?search=${data}`);
+  };
+
+  handleChange = (event) => {
+    const { name, value } = event.target;
+    this.setState({ [name]: value });
+  };
 
   render() {
     const { isAuthenticated, user } = this.props.auth;
@@ -86,30 +105,31 @@ class MainHeader extends Component {
               Select City
             </Link>
             <div className="dropdown-menu">
-              <Link to="#" className="dropdown-item">
+              <Link to="/results/?city=Delhi" className="dropdown-item">
                 Delhi
               </Link>
-              <Link to="#" className="dropdown-item">
+              <Link to="/results/?city=Mumbai" className="dropdown-item">
                 Mumbai
               </Link>
-              <Link to="#" className="dropdown-item">
+              <Link to="/results/?city=Kolkata" className="dropdown-item">
                 Kolkata
               </Link>
-              <Link to="#" className="dropdown-item">
+              <Link to="/results/?city=Bangalore" className="dropdown-item">
                 Bengaluru
               </Link>
-              <Link to="#" className="dropdown-item">
+              <Link to="/results/?city=Chennai" className="dropdown-item">
                 Chennai
               </Link>
             </div>
           </div>
-          <form className="form-inline mx-auto">
+          <form className="form-inline mx-auto" onSubmit={this.onSubmit}>
             <input
               className="form-control mr-sm-2"
-              type="search"
+              type="text"
               placeholder="Search"
-              aria-label="Search"
               size="50"
+              name="search"
+              onChange={this.handleChange}
             />
             <button
               className="btn btn-outline-light my-2 my-sm-0"
@@ -138,4 +158,7 @@ const mapDispatchToProps = (dispatch) => ({
   logoutUser: () => dispatch(logoutUser()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(MainHeader);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(MainHeader));

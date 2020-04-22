@@ -16,22 +16,40 @@ class SecondaryHeader extends Component {
             hidden
           ></button>
           <div className="collapse navbar-collapse">
-            <Link to="#" className="nav-item nav-link text-body">
+            <Link
+              to="/results/?category=Automobile"
+              className="nav-item nav-link text-body"
+            >
               Automobiles
             </Link>
-            <Link to="#" className="nav-item nav-link text-body">
+            <Link
+              to="/results/?category=Real-Estate"
+              className="nav-item nav-link text-body"
+            >
               Real Estate
             </Link>
-            <Link to="#" className="nav-item nav-link text-body">
+            <Link
+              to="/results/?category=Electronics"
+              className="nav-item nav-link text-body"
+            >
               Electronics
             </Link>
-            <Link to="#" className="nav-item nav-link text-body">
+            <Link
+              to="/results/?category=Fashion"
+              className="nav-item nav-link text-body"
+            >
               Fashion
             </Link>
-            <Link to="#" className="nav-item nav-link text-body">
+            <Link
+              to="/results/?category=Pet"
+              className="nav-item nav-link text-body"
+            >
               Pet
             </Link>
-            <Link to="#" className="nav-item nav-link text-body">
+            <Link
+              to="/results/?category=Furniture"
+              className="nav-item nav-link text-body"
+            >
               Furniture
             </Link>
           </div>

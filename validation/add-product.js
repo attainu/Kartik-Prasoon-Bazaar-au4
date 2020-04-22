@@ -27,8 +27,8 @@ module.exports = function validateProductInput(data) {
     errors.image1 = "Primary Image is required";
   }
 
-  if (!Validator.isLength(data.body.description, { min: 5, max: 100 })) {
-    errors.description = "description must be between 5 to 100 characters";
+  if (!Validator.isLength(data.body.description, { min: 5, max: 500 })) {
+    errors.description = "description must be between 5 to 500 characters";
   }
 
   if (Validator.isEmpty(data.body.description)) {
