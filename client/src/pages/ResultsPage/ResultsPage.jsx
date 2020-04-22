@@ -1,7 +1,59 @@
 import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import queryString from "query-string";
+import { withRouter } from "react-router-dom";
+
 import ProductCard from "../../components/ProductCard/ProductCard.component";
+
 class ResultsPage extends React.Component {
+  state = {
+    products: [],
+  };
+  async componentDidMount() {
+    let value = queryString.parse(this.props.history.location.search);
+    try {
+      let res = await axios.get(
+        `/api/products/results/?city=${value.city}&category=${
+          value.category
+        }&title=${value.search}&page=${value.page ? value.page : "1"}`
+      );
+      this.setState({ products: res.data });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async componentWillReceiveProps() {
+    let value = queryString.parse(this.props.history.location.search);
+    try {
+      let res = await axios.get(
+        `/api/products/results/?city=${value.city}&category=${
+          value.category
+        }&title=${value.search}&page=${value.page ? value.page : "1"}`
+      );
+      this.setState({ products: res.data });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  onSort = (event) => {
+    let searchCriteria = event.target.getAttribute("criteria");
+    let searchTerm = event.target.id;
+    let value = queryString.parse(this.props.history.location.search);
+    value[searchCriteria] = searchTerm;
+    value = queryString.stringify(value);
+    this.props.history.push({
+      pathname: "/results",
+      search: "?" + value,
+    });
+  };
+
+  clear = () => {
+    this.props.history.push("/results");
+  };
+
   render() {
     return (
       <Fragment>
@@ -23,24 +75,54 @@ class ResultsPage extends React.Component {
                 Category
               </button>
               <div className="dropdown-menu">
-                <Link to="#" className="dropdown-item" href="#">
+                <button
+                  onClick={this.onSort}
+                  className="dropdown-item"
+                  criteria="category"
+                  id="Automobile"
+                >
                   Automobile
-                </Link>
-                <Link to="#" className="dropdown-item" href="#">
+                </button>
+                <button
+                  className="dropdown-item"
+                  onClick={this.onSort}
+                  criteria="category"
+                  id="Real Estate"
+                >
                   Real Estate
-                </Link>
-                <Link to="#" className="dropdown-item" href="#">
+                </button>
+                <button
+                  className="dropdown-item"
+                  onClick={this.onSort}
+                  criteria="category"
+                  id="Electronics"
+                >
                   Electronic
-                </Link>
-                <Link to="#" className="dropdown-item" href="#">
+                </button>
+                <button
+                  className="dropdown-item"
+                  onClick={this.onSort}
+                  criteria="category"
+                  id="Pet"
+                >
                   Fashion
-                </Link>
-                <Link to="#" className="dropdown-item" href="#">
+                </button>
+                <button
+                  className="dropdown-item"
+                  onClick={this.onSort}
+                  criteria="category"
+                  id="Pet"
+                >
                   Pet
-                </Link>
-                <Link to="#" className="dropdown-item" href="#">
+                </button>
+                <button
+                  className="dropdown-item"
+                  onClick={this.onSort}
+                  criteria="category"
+                  id="Furniture"
+                >
                   Furniture
-                </Link>
+                </button>
               </div>
             </div>
             <div className="btn-group col-4">
@@ -54,48 +136,73 @@ class ResultsPage extends React.Component {
                 Location
               </button>
               <div className="dropdown-menu">
-                <Link to="#" className="dropdown-item" href="#">
+                <button
+                  className="dropdown-item"
+                  onClick={this.onSort}
+                  criteria="city"
+                  id="Delhi"
+                >
                   Delhi
-                </Link>
-                <Link to="#" className="dropdown-item" href="#">
+                </button>
+                <button
+                  className="dropdown-item"
+                  onClick={this.onSort}
+                  criteria="city"
+                  id="Mumbai"
+                >
                   Mumbai
-                </Link>
-                <Link to="#" className="dropdown-item" href="#">
+                </button>
+                <button
+                  className="dropdown-item"
+                  onClick={this.onSort}
+                  criteria="city"
+                  id="Bangalore"
+                >
                   Bangalore
-                </Link>
-                <Link to="#" className="dropdown-item" href="#">
+                </button>
+                <button
+                  className="dropdown-item"
+                  onClick={this.onSort}
+                  criteria="city"
+                  id="Kolkata"
+                >
                   Kolkata
-                </Link>
-                <Link to="#" className="dropdown-item" href="#">
+                </button>
+                <button
+                  className="dropdown-item"
+                  onClick={this.onSort}
+                  criteria="city"
+                  id="Chennai"
+                >
                   Chennai
-                </Link>
+                </button>
               </div>
             </div>
             <div className="btn-group col-2">
-              <button type="button" className="btn btn-outline-danger">
+              <button
+                type="button"
+                onClick={this.clear}
+                className="btn btn-outline-danger"
+              >
                 Reset
               </button>
             </div>
           </nav>
         </div>
         <div className="row col-11 container-fluid justify-content-start mx-auto">
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
+          {this.state.products.map((product, index) => (
+            <ProductCard
+              key={index}
+              product={product}
+              // onClick={this.onClick}
+              //  onWishlist={this.onWishlist}
+              //  userId={this.props.auth.user.id}
+            />
+          ))}
         </div>
       </Fragment>
     );
   }
 }
 
-export default ResultsPage;
+export default withRouter(ResultsPage);

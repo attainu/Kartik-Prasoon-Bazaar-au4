@@ -3,6 +3,7 @@ import axios from "axios";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
+import queryString from "query-string";
 
 import SecondaryHeader from "../../components/SecondaryHeader/SecondaryHeader.component";
 import Carousel from "../../components/Carousel/Carousel.component";
@@ -14,11 +15,29 @@ import { selectAuthInfo } from "../../Redux/auth/auth.selector";
 class HomePage extends React.Component {
   state = {
     productsHomePage: [],
+    value: "",
   };
 
   async componentDidMount() {
+    const value = queryString.parse(this.props.history.location.search);
     try {
-      let res = await axios.get("/api/products/allproducts/1");
+      let res = await axios.get(
+        `/api/products/allproducts/${value.page ? value.page : "1"}`
+      );
+      this.setState({
+        productsHomePage: res.data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async componentWillReceiveProps() {
+    const value = queryString.parse(this.props.history.location.search);
+    try {
+      let res = await axios.get(
+        `/api/products/allproducts/${value.page ? value.page : "1"}`
+      );
       this.setState({
         productsHomePage: res.data,
       });

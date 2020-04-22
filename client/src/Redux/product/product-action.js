@@ -16,20 +16,18 @@ export const addProduct = (data) => (dispatch) => {
     });
 };
 
-export const getMyProducts = (data) => (dispatch) => {
+export const getMyProducts = (data) => async (dispatch) => {
   let products = [];
-  data.map((val) => {
-    axios
-      .get(`/api/products/singleproduct/${val}`)
-      .then((res) => {
-        products.push(res.data);
-        if (data.length === products.length) {
-          dispatch({
-            type: GET_MY_PRODUCTS,
-            payload: products,
-          });
-        }
-      })
-      .catch((err) => console.log(err));
-  });
+  let i = 0;
+  while (i < data.length) {
+    let wait = await axios.get(`/api/products/singleproduct/${data[i]}`);
+    products.push(wait.data);
+    if (data.length === products.length) {
+      dispatch({
+        type: GET_MY_PRODUCTS,
+        payload: products,
+      });
+    }
+    i++;
+  }
 };

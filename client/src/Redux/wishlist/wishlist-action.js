@@ -2,20 +2,18 @@ import axios from "axios";
 
 import { GET_WISHLIST } from "./wishlist-types";
 
-export const getWishlist = (data) => (dispatch) => {
+export const getWishlist = (data) => async (dispatch) => {
   let products = [];
-  data.map((val) => {
-    axios
-      .get(`/api/products/singleproduct/${val}`)
-      .then((res) => {
-        products.push(res.data);
-        if (data.length === products.length) {
-          dispatch({
-            type: GET_WISHLIST,
-            payload: products,
-          });
-        }
-      })
-      .catch((err) => console.log(err));
-  });
+  let i = 0;
+  while (i < data.length) {
+    let wait = await axios.get(`/api/products/singleproduct/${data[i]}`);
+    products.push(wait.data);
+    if (data.length === products.length) {
+      dispatch({
+        type: GET_WISHLIST,
+        payload: products,
+      });
+    }
+    i++;
+  }
 };

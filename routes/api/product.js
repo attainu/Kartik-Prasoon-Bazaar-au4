@@ -39,8 +39,8 @@ router.get("/test", (req, res) => res.json({ msg: "Product Route Works" }));
 // @access    Public
 router.get("/allproducts/:page", (req, res) => {
   const page = req.params.page;
-  const startIndex = (page - 1) * 20;
-  const endIndex = page * 20;
+  const startIndex = (page - 1) * 12;
+  const endIndex = page * 12;
   Product.find()
     .sort({ date: -1 })
     .then((products) => {
@@ -209,5 +209,28 @@ router.post(
     });
   }
 );
+
+// @route     GET api/products/results/:city/:category/:page
+// @desc      Sort and Render products from date
+// @access    Public
+router.get("/results/", (req, res) => {
+  const page = req.query.page;
+  const city = req.query.city;
+  const category = req.query.category;
+  const title = req.query.title;
+  const startIndex = (page - 1) * 12;
+  const endIndex = page * 12;
+  let sort = {};
+  if (city !== "undefined") sort.city = city;
+  if (category !== "undefined") sort.category = category;
+  if (title !== "undefined") sort.title = title;
+  Product.find(sort)
+    .sort({ price: 0, date: -1 })
+    .then((products) => {
+      const tenProducts = products.slice(startIndex, endIndex);
+      res.json(tenProducts);
+    })
+    .catch((err) => res.status(404).json({ nopostsfound: "No posts found" }));
+});
 
 module.exports = router;

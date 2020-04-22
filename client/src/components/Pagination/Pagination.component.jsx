@@ -1,37 +1,78 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import queryString from "query-string";
+import { withRouter } from "react-router-dom";
 
-export default class Pagination extends Component {
+class Pagination extends Component {
+  state = {
+    value: "",
+  };
+  async componentWillReceiveProps() {
+    const val = queryString.parse(this.props.history.location.search);
+    if (val.page) {
+      this.setState({
+        value: queryString.parse(this.props.history.location.search),
+      });
+    } else {
+      this.setState({
+        value: { page: "1" },
+      });
+    }
+  }
+
   render() {
     return (
-      <div>
+      <div className="mt-3">
         <nav aria-label="Page navigation example">
-          <ul class="pagination">
-            <li class="page-item">
-              <a class="page-link" href="#" aria-label="Previous">
+          <ul className="pagination justify-content-center">
+            <li className="page-item">
+              <Link
+                className="page-link"
+                to={`/?page=${
+                  this.state.value.page > 1 ? this.state.value.page - 1 : "1"
+                }`}
+                aria-label="Previous"
+              >
                 <span aria-hidden="true">&laquo;</span>
-                <span class="sr-only">Previous</span>
-              </a>
+                <span className="sr-only">Previous</span>
+              </Link>
             </li>
-            <li class="page-item">
-              <a class="page-link" href="#">
-                1
-              </a>
+            {this.state.value.page > 1 ? (
+              <li className="page-item">
+                <Link
+                  className="page-link"
+                  to={`/?page=${this.state.value.page - 1}`}
+                >
+                  {this.state.value.page - 1}
+                </Link>
+              </li>
+            ) : (
+              ""
+            )}
+
+            <li className="page-item active">
+              <p className="page-link">
+                <span className="sr-only">(current)</span>{" "}
+                {this.state.value.page}
+              </p>
             </li>
-            <li class="page-item">
-              <a class="page-link" href="#">
-                2
-              </a>
+            <li className="page-item">
+              <Link
+                className="page-link"
+                to={`/?page=${parseInt(this.state.value.page) + 1}`}
+              >
+                {parseInt(this.state.value.page) + 1}
+              </Link>
             </li>
-            <li class="page-item">
-              <a class="page-link" href="#">
-                3
-              </a>
-            </li>
-            <li class="page-item">
-              <a class="page-link" href="#" aria-label="Next">
+            <li className="page-item">
+              <Link
+                className="page-link"
+                to={`/?page=${parseInt(this.state.value.page) + 1}`}
+                aria-label="Next"
+              >
                 <span aria-hidden="true">&raquo;</span>
-                <span class="sr-only">Next</span>
-              </a>
+                <span className="sr-only">Next</span>
+              </Link>
             </li>
           </ul>
         </nav>
@@ -39,3 +80,5 @@ export default class Pagination extends Component {
     );
   }
 }
+
+export default withRouter(Pagination);
