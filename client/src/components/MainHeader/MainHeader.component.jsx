@@ -25,6 +25,7 @@ class MainHeader extends Component {
     event.preventDefault();
     const data = this.state.search;
     this.props.history.push(`/results/?search=${data}`);
+    this.setState({ search: "" });
   };
 
   handleChange = (event) => {
@@ -130,6 +131,7 @@ class MainHeader extends Component {
               size="50"
               name="search"
               onChange={this.handleChange}
+              value={this.state.search}
             />
             <button
               className="btn btn-outline-light my-2 my-sm-0"

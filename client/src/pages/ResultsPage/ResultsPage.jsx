@@ -83,10 +83,10 @@ class ResultsPage extends React.Component {
           <nav className="row col-11 navbar ml-1">
             <div className="btn-group col-2">
               <button type="button" className="btn btn-light" disabled>
-                <h5 className="font-weight-bolder">SORT BY:</h5>
+                <h5 className="font-weight-bolder">SORT BY :</h5>
               </button>
             </div>
-            <div className="btn-group col-4">
+            <div className="btn-group col-3">
               <button
                 type="button"
                 className="btn btn-outline-info dropdown-toggle"
@@ -147,7 +147,7 @@ class ResultsPage extends React.Component {
                 </button>
               </div>
             </div>
-            <div className="btn-group col-4">
+            <div className="btn-group col-3">
               <button
                 type="button"
                 className="btn btn-outline-info dropdown-toggle"
@@ -200,7 +200,7 @@ class ResultsPage extends React.Component {
                 </button>
               </div>
             </div>
-            <div className="btn-group col-2">
+            <div className="btn-group col-3">
               <button
                 type="button"
                 onClick={this.clear}
@@ -210,18 +210,37 @@ class ResultsPage extends React.Component {
               </button>
             </div>
           </nav>
+          <nav className="row col-11 navbar ml-1">
+            <div className="btn-group col-2">
+              <button type="button" className="btn btn-light" disabled>
+                <h5 className="font-weight-bolder">RESULTS FOR :</h5>
+              </button>
+            </div>
+            <div className="btn-group col-3">
+              <button type="button" className="btn btn-outline-info" disabled>
+                {!queryString.parse(this.props.history.location.search).category
+                  ? "-"
+                  : queryString.parse(this.props.history.location.search)
+                      .category}
+              </button>
+            </div>
+            <div className="btn-group col-3">
+              <button type="button" className="btn btn-outline-info" disabled>
+                {!queryString.parse(this.props.history.location.search).city
+                  ? "-"
+                  : queryString.parse(this.props.history.location.search).city}
+              </button>
+            </div>
+            <div className="btn-group col-3">
+              <button type="button" className="btn btn-outline-info" disabled>
+                {!queryString.parse(this.props.history.location.search).search
+                  ? "-"
+                  : queryString.parse(this.props.history.location.search)
+                      .search}
+              </button>
+            </div>
+          </nav>
         </div>
-        <h2 className="text-center my-5">
-          Results for Category:{" "}
-          {!queryString.parse(this.props.history.location.search).category
-            ? "NA"
-            : queryString.parse(this.props.history.location.search)
-                .category}{" "}
-          and City:{" "}
-          {!queryString.parse(this.props.history.location.search).city
-            ? "NA"
-            : queryString.parse(this.props.history.location.search).city}
-        </h2>
         <div className="row col-11 container-fluid justify-content-start mx-auto">
           {this.state.products.map((product, index) => (
             <ProductCard

@@ -3,10 +3,10 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import classnames from "classnames";
+import axios from "axios";
 
 import { selectAuthInfo } from "../../Redux/auth/auth.selector";
 import { selectProductInfo } from "../../Redux/product/product-selector";
-import { addProduct } from "../../Redux/product/product-action";
 
 class PostAdPage extends Component {
   constructor() {
@@ -30,8 +30,10 @@ class PostAdPage extends Component {
     event.preventDefault();
 
     const newProduct = new FormData(event.target);
-    const data = { newProduct: newProduct, history: this.props.history };
-    this.props.addProduct(data);
+    axios
+      .post("/api/products/addproduct", newProduct)
+      .then((res) => this.props.history.push("/myads"))
+      .catch((err) => this.setState({ errors: err.response.data }));
   };
   handleChange = (event) => {
     const { value } = event.target;
@@ -244,9 +246,7 @@ const mapStateToProps = (state) => ({
   product: selectProductInfo(state),
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  addProduct: (data) => dispatch(addProduct(data)),
-});
+const mapDispatchToProps = (dispatch) => ({});
 
 export default connect(
   mapStateToProps,
