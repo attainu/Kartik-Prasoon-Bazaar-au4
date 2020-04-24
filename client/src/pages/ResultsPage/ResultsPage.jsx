@@ -1,8 +1,11 @@
 import React, { Fragment } from "react";
-import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 import axios from "axios";
 import queryString from "query-string";
 import { withRouter } from "react-router-dom";
+
+import { selectAuthInfo } from "../../Redux/auth/auth.selector";
 
 import ProductCard from "../../components/ProductCard/ProductCard.component";
 import Pagination from "../../components/Pagination/Pagination.component";
@@ -38,6 +41,24 @@ class ResultsPage extends React.Component {
       console.log(error);
     }
   }
+
+  onClick = (event) => {
+    this.props.history.push(`/product/?id=${event.target.id}`);
+  };
+
+  onWishlist = (event) => {
+    if (this.props.auth.isAuthenticated) {
+      axios
+        .post("/api/users/addtowishlist", {
+          id: this.props.auth.user.id,
+          proId: event.target.id,
+        })
+        .then((res) => this.props.history.push("/wishlist"))
+        .catch((err) => console.log(err));
+    } else {
+      this.props.history.push("/login");
+    }
+  };
 
   onSort = (event) => {
     let searchCriteria = event.target.getAttribute("criteria");
@@ -190,13 +211,24 @@ class ResultsPage extends React.Component {
             </div>
           </nav>
         </div>
+        <h2 className="text-center my-5">
+          Results for Category:{" "}
+          {!queryString.parse(this.props.history.location.search).category
+            ? "NA"
+            : queryString.parse(this.props.history.location.search)
+                .category}{" "}
+          and City:{" "}
+          {!queryString.parse(this.props.history.location.search).city
+            ? "NA"
+            : queryString.parse(this.props.history.location.search).city}
+        </h2>
         <div className="row col-11 container-fluid justify-content-start mx-auto">
           {this.state.products.map((product, index) => (
             <ProductCard
               key={index}
               product={product}
-              // onClick={this.onClick}
-              //  onWishlist={this.onWishlist}
+              onClick={this.onClick}
+              onWishlist={this.onWishlist}
               //  userId={this.props.auth.user.id}
             />
           ))}
@@ -208,4 +240,12 @@ class ResultsPage extends React.Component {
   }
 }
 
-export default withRouter(ResultsPage);
+ResultsPage.propTypes = {
+  auth: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  auth: selectAuthInfo(state),
+});
+
+export default connect(mapStateToProps)(withRouter(ResultsPage));

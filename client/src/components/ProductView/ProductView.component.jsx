@@ -259,12 +259,22 @@ class ProductView extends Component {
                     <div className="col-md-6 text-center">
                       <img
                         className="rounded-circle"
-                        src="https://www.gravatar.com/avatar/anything?s=200&d=mm"
+                        src={
+                          !user.image
+                            ? "https://www.gravatar.com/avatar/anything?s=200&d=mm"
+                            : user.image
+                        }
+                        style={{ width: "150px" }}
                         alt=""
                       />
                     </div>
                     <div className="col-md-6">
                       <h2 className="text-center">Seller Info</h2>
+                      <h4 className="text-center">
+                        {!user.name
+                          ? "You have to be logged to see the user info"
+                          : ""}
+                      </h4>
                       <h4 className="text-center">{user.name}</h4>
                       <p className="text-center">{user.email}</p>
                       <p className="text-center">
