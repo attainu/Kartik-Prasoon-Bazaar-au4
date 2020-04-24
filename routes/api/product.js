@@ -223,7 +223,7 @@ router.get("/results/", (req, res) => {
   let sort = {};
   if (city !== "undefined") sort.city = city;
   if (category !== "undefined") sort.category = category;
-  if (title !== "undefined") sort.title = title;
+  if (title !== "undefined") sort.title = new RegExp(title, "g");
   Product.find(sort)
     .sort({ price: 0, date: -1 })
     .then((products) => {
