@@ -64,12 +64,43 @@ class HomePage extends React.Component {
     }
   };
 
+  timeout = () => {
+    setTimeout(() => {
+      if (this.state.productsHomePage.length === 0) {
+        if (document.getElementById("loaderChild")) {
+          document.getElementById("loaderChild").remove();
+          document.getElementById(
+            "loader"
+          ).innerHTML = `<h1 class="display-4">No more products</h1>`;
+        }
+      }
+    }, 2000);
+  };
+
   render() {
     return (
       <div>
         <SecondaryHeader />
         <Carousel />
         <br />
+        {this.state.productsHomePage.length === 0 ? (
+          <div
+            className="d-flex justify-content-center my-3"
+            id="loader"
+            onClick={this.timeout()}
+          >
+            <div
+              className="spinner-border"
+              style={{ width: "3rem", height: "3rem" }}
+              role="status"
+              id="loaderChild"
+            >
+              <span className="sr-only">Loading...</span>
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
         <div className="row col-11 container-fluid justify-content-start mx-auto">
           {this.state.productsHomePage.map((product, index) => (
             <ProductCard

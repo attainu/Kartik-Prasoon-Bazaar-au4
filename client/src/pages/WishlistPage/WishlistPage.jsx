@@ -38,6 +38,19 @@ class WishlistPage extends Component {
       .catch((err) => console.log(err));
   };
 
+  timeout = () => {
+    setTimeout(() => {
+      if (this.props.wishlist.myWishlist.length === 0) {
+        if (document.getElementById("loaderChild")) {
+          document.getElementById("loaderChild").remove();
+          document.getElementById(
+            "loader"
+          ).innerHTML = `<h1 class="display-4">No Items in Wishlist</h1>`;
+        }
+      }
+    }, 2000);
+  };
+
   render() {
     return (
       <div>
@@ -48,7 +61,7 @@ class WishlistPage extends Component {
                 <Link to="/dashboard" className="btn btn-light">
                   Go Back / Dashboard
                 </Link>
-                <h1 className="display-4 text-center">My Wishlist</h1>
+                <h1 className="display-3 text-center">My Wishlist</h1>
                 <p className="lead text-center">
                   Contact the seller soon before the product is sold out
                 </p>
@@ -57,6 +70,24 @@ class WishlistPage extends Component {
           </div>
         </div>
         <br />
+        {this.props.wishlist.myWishlist.length === 0 ? (
+          <div
+            className="d-flex justify-content-center"
+            id="loader"
+            onClick={this.timeout()}
+          >
+            <div
+              className="spinner-border"
+              style={{ width: "3rem", height: "3rem" }}
+              role="status"
+              id="loaderChild"
+            >
+              <span className="sr-only">Loading...</span>
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
         <div className="row col-11 container-fluid justify-content-start mx-auto">
           {this.props.wishlist.myWishlist.length > 0
             ? this.props.wishlist.myWishlist.map((product, index) => (

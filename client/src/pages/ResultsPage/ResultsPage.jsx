@@ -76,6 +76,19 @@ class ResultsPage extends React.Component {
     this.props.history.push("/results");
   };
 
+  timeout = () => {
+    setTimeout(() => {
+      if (this.state.products.length === 0) {
+        if (document.getElementById("loaderChild")) {
+          document.getElementById("loaderChild").remove();
+          document.getElementById(
+            "loader"
+          ).innerHTML = `<h1 class="display-4">No Results Found</h1>`;
+        }
+      }
+    }, 3000);
+  };
+
   render() {
     return (
       <Fragment>
@@ -241,6 +254,24 @@ class ResultsPage extends React.Component {
             </div>
           </nav>
         </div>
+        {this.state.products.length === 0 ? (
+          <div
+            className="d-flex justify-content-center m-4"
+            id="loader"
+            onClick={this.timeout()}
+          >
+            <div
+              className="spinner-border"
+              style={{ width: "3rem", height: "3rem" }}
+              role="status"
+              id="loaderChild"
+            >
+              <span className="sr-only">Loading...</span>
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
         <div className="row col-11 container-fluid justify-content-start mx-auto">
           {this.state.products.map((product, index) => (
             <ProductCard

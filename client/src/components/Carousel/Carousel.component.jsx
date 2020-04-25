@@ -8,20 +8,25 @@ class Carousel extends Component {
   render() {
     return (
       <div
-        class="jumbotron"
+        className="jumbotron"
         style={{
           background: `linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), 
       url(${DummyImage2})`,
         }}
       >
-        <div class="container">
+        <div className="container">
           <div className="text-center">
             <img src={Logo} alt="logo" style={{ width: "80%" }} />
           </div>
-          <h3 class="display-4 text-center my-3">A perfect online market</h3>
+          <h3 className="display-4 text-center my-3">
+            A perfect online market
+          </h3>
           <p className="text-center">
             <Link to="/postad">
-              <button class="btn btn-outline-info btn-lg col-6" role="button">
+              <button
+                className="btn btn-outline-info btn-lg col-6"
+                role="button"
+              >
                 <span className="text-white">Sell Now »</span>
               </button>
             </Link>
