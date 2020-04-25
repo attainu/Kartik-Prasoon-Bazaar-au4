@@ -30,6 +30,11 @@ class ProductView extends Component {
   }
 
   onDelete = (event) => {
+    document.getElementById(event.target.id).innerHTML = `<span
+  class="spinner-border spinner-border-sm"
+  role="status"
+  aria-hidden="true"
+></span>${" "}Loading...`;
     axios
       .post(`/api/products/deleteproduct`, {
         id: event.target.id,
@@ -54,10 +59,18 @@ class ProductView extends Component {
   };
 
   onRemove = (event) => {
+    document.getElementById(event.target.id).innerHTML = `<span
+  class="spinner-border spinner-border-sm"
+  role="status"
+  aria-hidden="true"
+></span>${" "}Loading...`;
     let data = { id: this.props.auth.user.id, proId: event.target.id };
     axios
       .post("/api/users/deleteproductfromwishlist", data)
-      .then((res) => window.location.reload())
+      .then((res) => {
+        localStorage.removeItem("persist:root");
+        window.location.reload();
+      })
       .catch((err) => console.log(err));
   };
 

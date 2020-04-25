@@ -41,6 +41,11 @@ class EditProfilePage extends Component {
   }
 
   handleSubmit = (event) => {
+    document.getElementById("saveButton").innerHTML = `<span
+    class="spinner-border spinner-border-sm"
+    role="status"
+    aria-hidden="true"
+  ></span>${" "}Loading...`;
     event.preventDefault();
 
     const newUser = {
@@ -57,6 +62,11 @@ class EditProfilePage extends Component {
   };
 
   handleSubmitPhoto = (event) => {
+    document.getElementById("inputGroupFileAddon01").innerHTML = `<span
+    class="spinner-border spinner-border-sm"
+    role="status"
+    aria-hidden="true"
+  ></span>${" "}Loading...`;
     event.preventDefault();
 
     const newPhoto = new FormData(event.target);
@@ -79,7 +89,7 @@ class EditProfilePage extends Component {
               <Link to="/dashboard" className="btn btn-light">
                 Go Back / Dashboard
               </Link>
-              <h1 className="display-4 text-center">Edit Your Profile</h1>
+              <h1 className="display-3 text-center my-2">Edit Your Profile</h1>
               <p className="lead text-center">
                 Let's get some information to make your profile stand out
               </p>
@@ -101,11 +111,7 @@ class EditProfilePage extends Component {
                   <br />
                   <div className="input-group">
                     <div className="input-group-prepend">
-                      <button
-                        type="submit"
-                        className="btn btn-info"
-                        id="inputGroupFileAddon01"
-                      >
+                      <button type="submit" className="btn btn-info" disabled>
                         Change Profile Picture
                       </button>
                     </div>
@@ -140,6 +146,13 @@ class EditProfilePage extends Component {
                     Change Your Profile Picture
                   </small>
                 </div>
+                <button
+                  type="submit"
+                  className="btn btn-info mb-5"
+                  id="inputGroupFileAddon01"
+                >
+                  Save your Profile Picture
+                </button>
               </form>
 
               {/* Edit Profile */}
@@ -250,10 +263,19 @@ class EditProfilePage extends Component {
                   />
                 </div>
                 <br />
-                <button type="submit" className="btn btn-info col-3">
-                  Save
-                </button>
-                <button className="btn btn-secondary col-3 ml-2">Cancel</button>
+                <div className="d-flex justify-content-around">
+                  <button
+                    id="saveButton"
+                    type="submit"
+                    className="btn btn-info col-5"
+                    onClick={this.onButtonClick}
+                  >
+                    Save
+                  </button>
+                  <Link className="btn btn-secondary col-5" to="/dashboard">
+                    Cancel
+                  </Link>
+                </div>
               </form>
             </div>
           </div>

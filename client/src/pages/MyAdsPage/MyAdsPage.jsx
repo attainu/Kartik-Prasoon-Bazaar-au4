@@ -23,12 +23,20 @@ class MyAdsPage extends Component {
   };
 
   onDelete = (event) => {
+    document.getElementById(event.target.id).innerHTML = `<span
+  class="spinner-border spinner-border-sm"
+  role="status"
+  aria-hidden="true"
+></span>${" "}Loading...`;
     axios
       .post(`/api/products/deleteproduct`, {
         id: event.target.id,
         userId: event.target.getAttribute("userid"),
       })
-      .then((res) => window.location.reload());
+      .then((res) => {
+        localStorage.removeItem("persist:root");
+        window.location.reload();
+      });
   };
 
   render() {

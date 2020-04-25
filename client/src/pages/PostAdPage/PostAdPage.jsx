@@ -4,6 +4,7 @@ import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 import { selectAuthInfo } from "../../Redux/auth/auth.selector";
 import { selectProductInfo } from "../../Redux/product/product-selector";
@@ -27,6 +28,11 @@ class PostAdPage extends Component {
   }
 
   handleSubmit = (event) => {
+    document.getElementById("saveButton").innerHTML = `<span
+    class="spinner-border spinner-border-sm"
+    role="status"
+    aria-hidden="true"
+  ></span>${" "}Loading...`;
     event.preventDefault();
 
     const newProduct = new FormData(event.target);
@@ -225,8 +231,12 @@ class PostAdPage extends Component {
 
                 <br />
                 <div className="d-flex justify-content-around">
-                  <button className="btn btn-info col-5">Save</button>
-                  <button className="btn btn-secondary col-5">Cancel</button>
+                  <button className="btn btn-info col-5" id="saveButton">
+                    Save
+                  </button>
+                  <Link to="/" className="btn btn-secondary col-5">
+                    Cancel
+                  </Link>
                 </div>
               </form>
             </div>
