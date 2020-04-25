@@ -82,7 +82,6 @@ class HomePage extends React.Component {
       <div>
         <SecondaryHeader />
         <Carousel />
-        <br />
         {this.state.productsHomePage.length === 0 ? (
           <div
             className="d-flex justify-content-center my-3"

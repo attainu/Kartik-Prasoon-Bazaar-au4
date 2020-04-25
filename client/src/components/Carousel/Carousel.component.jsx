@@ -1,38 +1,110 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
-import DummyImage2 from "../../assets/dummyimages/cart.png";
+import DummyImage2 from "../../assets/dummyimages/shopping1.jpeg";
 import Logo from "../../assets/logo/logo-black.png";
 
 class Carousel extends Component {
   render() {
     return (
-      <div
-        className="jumbotron"
-        style={{
-          background: `linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), 
+      <div>
+        {!window.matchMedia("(max-width: 500px)").matches ? (
+          <div
+            className="jumbotron"
+            style={{
+              background: `linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), 
       url(${DummyImage2})`,
-        }}
-      >
-        <div className="container">
-          <div className="text-center">
-            <img src={Logo} alt="logo" style={{ width: "80%" }} />
-          </div>
-          <h3 className="display-4 text-center my-3">
-            A perfect online market
-          </h3>
-          <p className="text-center">
-            <Link to="/postad">
-              <button
-                className="btn btn-outline-info btn-lg col-6"
-                role="button"
+            }}
+          >
+            <div className="container">
+              <div className="text-right">
+                <img src={Logo} alt="logo" style={{ width: "70%" }} />
+              </div>
+              <h3
+                className="display-4 text-right my-3 text-white mb-3 mr-3"
+                style={{ fontFamily: `'Kalam', cursive` }}
               >
-                <span className="text-white">Sell Now »</span>
-              </button>
-            </Link>
-          </p>
-        </div>
+                बेच... कुछ भी, कभी भी
+              </h3>
+              <p className="text-right">
+                <Link to="/postad">
+                  <button
+                    className="btn btn-outline-info btn-lg col-6"
+                    role="button"
+                  >
+                    <span className="text-white">Sell Now »</span>
+                  </button>
+                </Link>
+              </p>
+            </div>
+          </div>
+        ) : (
+          <div
+            className="jumbotron"
+            style={{
+              background: `linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), 
+      url(${DummyImage2})`,
+              backgroundPosition: "right",
+            }}
+          >
+            <div className="container">
+              <div className="text-center">
+                <img src={Logo} alt="logo" style={{ width: "100%" }} />
+              </div>
+              <h3
+                className="display-5 text-center my-3 text-white"
+                style={{ fontFamily: `'Kalam', cursive` }}
+              >
+                बेच... कुछ भी, कभी भी
+              </h3>
+              <p className="text-center">
+                <Link to="/postad">
+                  <button
+                    className="btn btn-outline-info btn-lg col-6"
+                    role="button"
+                  >
+                    <span className="text-white">Sell Now »</span>
+                  </button>
+                </Link>
+              </p>
+            </div>
+          </div>
+        )}
       </div>
+      // <div
+      //   className="jumbotron"
+      //   style={
+      //     !window.matchMedia("(max-width: 500px)").matches
+      //       ? {
+      //           background: `linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ),
+      // url(${DummyImage2})`,
+      //         }
+      //       : {
+      //           background: `linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ),
+      // url(${DummyImage2})`,
+      //           backgroundPosition: "right",
+      //         }
+      //   }
+      // >
+      //   <div className="container">
+      //     <div className="text-right">
+      //       <img src={Logo} alt="logo" style={{ width: "70%" }} />
+      //     </div>
+      //     <h3 className="display-4 text-right my-3 text-white">
+      //       A perfect online market
+      //     </h3>
+      //     <p className="text-right">
+      //       <Link to="/postad">
+      //         <button
+      //           className="btn btn-outline-info btn-lg col-6"
+      //           role="button"
+      //         >
+      //           <span className="text-white">Sell Now »</span>
+      //         </button>
+      //       </Link>
+      //     </p>
+      //   </div>
+      // </div>
       // <div
       //   id="carouselExampleIndicators"
       //   className="carousel slide"
