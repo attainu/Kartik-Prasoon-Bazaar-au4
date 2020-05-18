@@ -13,6 +13,7 @@ import Pagination from "../../components/Pagination/Pagination.component";
 class ResultsPage extends React.Component {
   state = {
     products: [],
+    loader: true,
   };
   async componentDidMount() {
     let value = queryString.parse(this.props.history.location.search);
@@ -22,7 +23,7 @@ class ResultsPage extends React.Component {
           value.category
         }&title=${value.search}&page=${value.page ? value.page : "1"}`
       );
-      this.setState({ products: res.data });
+      this.setState({ products: res.data, loader: false });
     } catch (error) {
       console.log(error);
     }
@@ -36,7 +37,7 @@ class ResultsPage extends React.Component {
           value.category
         }&title=${value.search}&page=${value.page ? value.page : "1"}`
       );
-      this.setState({ products: res.data });
+      this.setState({ products: res.data, loader: false });
     } catch (error) {
       console.log(error);
     }
@@ -76,20 +77,17 @@ class ResultsPage extends React.Component {
     this.props.history.push("/results");
   };
 
-  timeout = () => {
-    setTimeout(() => {
-      if (this.state.products.length === 0) {
-        if (document.getElementById("loaderChild")) {
-          document.getElementById("loaderChild").remove();
-          document.getElementById(
-            "loader"
-          ).innerHTML = `<h1 class="display-4">No Results Found</h1>`;
-        }
-      }
-    }, 3000);
-  };
-
   render() {
+    let value = queryString.parse(this.props.history.location.search);
+    let { city, category } = value;
+    let queryPram =
+      city && category
+        ? `?category=${category}&city=${city}&`
+        : city
+        ? `?city=${city}&`
+        : category
+        ? `?category=${category}&`
+        : null;
     return (
       <Fragment>
         <div className="bg-light">
@@ -254,12 +252,8 @@ class ResultsPage extends React.Component {
             </div>
           </nav>
         </div>
-        {this.state.products.length === 0 ? (
-          <div
-            className="d-flex justify-content-center m-4"
-            id="loader"
-            onClick={this.timeout()}
-          >
+        {this.state.loader ? (
+          <div className="d-flex justify-content-center my-3" id="loader">
             <div
               className="spinner-border"
               style={{ width: "3rem", height: "3rem" }}
@@ -269,6 +263,8 @@ class ResultsPage extends React.Component {
               <span className="sr-only">Loading...</span>
             </div>
           </div>
+        ) : this.state.products.length === 0 ? (
+          <h1 class="display-4 text-center">No more products</h1>
         ) : (
           ""
         )}
@@ -283,8 +279,7 @@ class ResultsPage extends React.Component {
             />
           ))}
         </div>
-
-        <Pagination url="/results/" />
+        <Pagination url="/results/" queryPram={queryPram} />
       </Fragment>
     );
   }

@@ -16,6 +16,7 @@ class HomePage extends React.Component {
   state = {
     productsHomePage: [],
     value: "",
+    loader: true,
   };
 
   async componentDidMount() {
@@ -26,6 +27,7 @@ class HomePage extends React.Component {
       );
       this.setState({
         productsHomePage: res.data,
+        loader: false,
       });
     } catch (error) {
       console.log(error);
@@ -40,6 +42,7 @@ class HomePage extends React.Component {
       );
       this.setState({
         productsHomePage: res.data,
+        loader: false,
       });
     } catch (error) {
       console.log(error);
@@ -64,30 +67,14 @@ class HomePage extends React.Component {
     }
   };
 
-  timeout = () => {
-    setTimeout(() => {
-      if (this.state.productsHomePage.length === 0) {
-        if (document.getElementById("loaderChild")) {
-          document.getElementById("loaderChild").remove();
-          document.getElementById(
-            "loader"
-          ).innerHTML = `<h1 class="display-4">No more products</h1>`;
-        }
-      }
-    }, 2000);
-  };
-
   render() {
     return (
       <div>
         <SecondaryHeader />
         <Carousel />
-        {this.state.productsHomePage.length === 0 ? (
-          <div
-            className="d-flex justify-content-center my-3"
-            id="loader"
-            onClick={this.timeout()}
-          >
+        {console.log}
+        {this.state.loader ? (
+          <div className="d-flex justify-content-center my-3" id="loader">
             <div
               className="spinner-border"
               style={{ width: "3rem", height: "3rem" }}
@@ -97,6 +84,8 @@ class HomePage extends React.Component {
               <span className="sr-only">Loading...</span>
             </div>
           </div>
+        ) : this.state.productsHomePage.length === 0 ? (
+          <h1 class="display-4 text-center">No more products</h1>
         ) : (
           ""
         )}

@@ -188,7 +188,9 @@ class ProductView extends Component {
                           <i className="far fa-calendar-alt"></i>
                         </th>
                         <td>Date</td>
-                        <td>{Date(product.date).slice(0, 15)}</td>
+                        <td>
+                          {new Date(product.date).toUTCString().slice(0, 16)}
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -265,74 +267,87 @@ class ProductView extends Component {
             {/* <!--Grid row--> */}
 
             {/* <!--Grid row--> */}
-            <div className="d-flex justify-content-center mt-5">
-              <div className="card card-body bg-info text-white mb-3 col-md-6">
-                <div className="container">
-                  <div className="row">
-                    <div className="col-md-6 text-center">
-                      <img
-                        className="rounded-circle"
-                        src={
-                          !user.image
-                            ? "https://www.gravatar.com/avatar/anything?s=200&d=mm"
-                            : user.image
-                        }
-                        style={{ width: "150px" }}
-                        alt=""
-                      />
-                    </div>
-                    <div className="col-md-6">
-                      <h2 className="text-center">Seller Info</h2>
-                      <h4 className="text-center">
-                        {!user.name
-                          ? "You have to be logged to see the user info"
-                          : ""}
-                      </h4>
-                      <h4 className="text-center">{user.name}</h4>
-                      <p className="text-center">{user.email}</p>
-                      <p className="text-center">
-                        {!user.contactNo ? `` : `+91 ${user.contactNo}`}
-                      </p>
-                      <p className="text-center">
-                        {!user.city ? `` : `${user.city}`}
-                      </p>
-                      <p className="text-center">
-                        {user.facebook ? (
-                          <Link to={user.facebook} className="text-white p-2">
-                            <i className="fab fa-facebook fa-2x"></i>
-                          </Link>
-                        ) : (
-                          <i
-                            className="fab fa-facebook fa-2x p-2"
-                            style={{ color: "#bbbbbb" }}
-                          ></i>
-                        )}
-                        {user.youtube ? (
-                          <Link to={user.youtube} className="text-white p-2">
-                            <i className="fab fa-youtube fa-2x"></i>
-                          </Link>
-                        ) : (
-                          <i
-                            className="fab fa-youtube fa-2x p-2"
-                            style={{ color: "#bbbbbb" }}
-                          ></i>
-                        )}
-                        {user.instagram ? (
-                          <Link to={user.instagram} className="text-white p-2">
-                            <i className="fab fa-instagram fa-2x"></i>
-                          </Link>
-                        ) : (
-                          <i
-                            className="fab fa-instagram fa-2x p-2"
-                            style={{ color: "#bbbbbb" }}
-                          ></i>
-                        )}
-                      </p>
+            {this.props.auth.user.id === this.state.productData.user ? (
+              ""
+            ) : (
+              <div className="d-flex justify-content-center mt-5">
+                <div className="card card-body bg-info text-white mb-3 col-md-6">
+                  <div className="container">
+                    <div className="row">
+                      <div className="col-md-6 text-center">
+                        <img
+                          className="rounded-circle"
+                          src={
+                            !user.image
+                              ? "https://www.gravatar.com/avatar/anything?s=200&d=mm"
+                              : user.image
+                          }
+                          style={{ width: "150px" }}
+                          alt=""
+                        />
+                      </div>
+                      <div className="col-md-6">
+                        <h2 className="text-center">Seller Info</h2>
+                        <h4 className="text-center">
+                          {!user.name
+                            ? "You have to be logged-in to see the user info"
+                            : ""}
+                        </h4>
+                        <h4 className="text-center">{user.name}</h4>
+                        <p className="text-center">
+                          {user.google
+                            ? user.google.email
+                            : user.local
+                            ? user.local.email
+                            : ""}
+                        </p>
+                        <p className="text-center">
+                          {!user.contactNo ? `` : `+91 ${user.contactNo}`}
+                        </p>
+                        <p className="text-center">
+                          {!user.city ? `` : `${user.city}`}
+                        </p>
+                        <p className="text-center">
+                          {user.facebook ? (
+                            <Link to={user.facebook} className="text-white p-2">
+                              <i className="fab fa-facebook fa-2x"></i>
+                            </Link>
+                          ) : (
+                            <i
+                              className="fab fa-facebook fa-2x p-2"
+                              style={{ color: "#bbbbbb" }}
+                            ></i>
+                          )}
+                          {user.youtube ? (
+                            <Link to={user.youtube} className="text-white p-2">
+                              <i className="fab fa-youtube fa-2x"></i>
+                            </Link>
+                          ) : (
+                            <i
+                              className="fab fa-youtube fa-2x p-2"
+                              style={{ color: "#bbbbbb" }}
+                            ></i>
+                          )}
+                          {user.instagram ? (
+                            <Link
+                              to={user.instagram}
+                              className="text-white p-2"
+                            >
+                              <i className="fab fa-instagram fa-2x"></i>
+                            </Link>
+                          ) : (
+                            <i
+                              className="fab fa-instagram fa-2x p-2"
+                              style={{ color: "#bbbbbb" }}
+                            ></i>
+                          )}
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
+            )}
           </div>
           {/* <!--Grid row--> */}
         </main>

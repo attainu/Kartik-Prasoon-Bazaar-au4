@@ -30,7 +30,7 @@ class ProductCard extends Component {
               <div className="d-flex justify-content-between">
                 <span className="card-text">{this.props.product.city}</span>
                 <span className="card-text">
-                  {Date(this.props.product.date).slice(3, 15)}
+                  {new Date(this.props.product.date).toUTCString().slice(4, 16)}
                 </span>
               </div>
             </div>

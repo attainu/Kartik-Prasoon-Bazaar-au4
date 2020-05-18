@@ -21,6 +21,9 @@ class Pagination extends Component {
   }
 
   render() {
+    let url = this.props.queryPram
+      ? this.props.url + this.props.queryPram
+      : this.props.url + "?";
     return (
       <div className="mt-3">
         <nav aria-label="Page navigation example">
@@ -28,7 +31,7 @@ class Pagination extends Component {
             <li className="page-item">
               <Link
                 className="page-link"
-                to={`${this.props.url}?page=${
+                to={`${url}page=${
                   this.state.value.page > 1 ? this.state.value.page - 1 : "1"
                 }`}
                 aria-label="Previous"
@@ -41,7 +44,7 @@ class Pagination extends Component {
               <li className="page-item">
                 <Link
                   className="page-link"
-                  to={`${this.props.url}?page=${this.state.value.page - 1}`}
+                  to={`${url}page=${this.state.value.page - 1}`}
                 >
                   {this.state.value.page - 1}
                 </Link>
@@ -59,9 +62,7 @@ class Pagination extends Component {
             <li className="page-item">
               <Link
                 className="page-link"
-                to={`${this.props.url}?page=${
-                  parseInt(this.state.value.page) + 1
-                }`}
+                to={`${url}page=${parseInt(this.state.value.page) + 1}`}
               >
                 {parseInt(this.state.value.page) + 1}
               </Link>
@@ -69,9 +70,7 @@ class Pagination extends Component {
             <li className="page-item">
               <Link
                 className="page-link"
-                to={`${this.props.url}?page=${
-                  parseInt(this.state.value.page) + 1
-                }`}
+                to={`${url}page=${parseInt(this.state.value.page) + 1}`}
                 aria-label="Next"
               >
                 <span aria-hidden="true">&raquo;</span>
