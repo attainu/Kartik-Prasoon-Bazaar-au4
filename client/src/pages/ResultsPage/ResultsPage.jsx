@@ -16,6 +16,7 @@ class ResultsPage extends React.Component {
     loader: true,
   };
   async componentDidMount() {
+    this.setState({ products: [], loader: true });
     let value = queryString.parse(this.props.history.location.search);
     try {
       let res = await axios.get(
@@ -30,6 +31,7 @@ class ResultsPage extends React.Component {
   }
 
   async componentWillReceiveProps() {
+    this.setState({ products: [], loader: true });
     let value = queryString.parse(this.props.history.location.search);
     try {
       let res = await axios.get(

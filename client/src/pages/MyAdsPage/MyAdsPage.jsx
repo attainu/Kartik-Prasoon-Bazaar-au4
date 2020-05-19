@@ -55,7 +55,7 @@ class MyAdsPage extends Component {
           ).innerHTML = `<h1 class="display-4">No Items for Sale</h1>`;
         }
       }
-    }, 0);
+    }, 2000);
   };
 
   render() {

@@ -20,6 +20,10 @@ class HomePage extends React.Component {
   };
 
   async componentDidMount() {
+    this.setState({
+      productsHomePage: [],
+      loader: true,
+    });
     const value = queryString.parse(this.props.history.location.search);
     try {
       let res = await axios.get(
@@ -35,6 +39,10 @@ class HomePage extends React.Component {
   }
 
   async componentWillReceiveProps() {
+    this.setState({
+      productsHomePage: [],
+      loader: true,
+    });
     const value = queryString.parse(this.props.history.location.search);
     try {
       let res = await axios.get(

@@ -54,7 +54,7 @@ class WishlistPage extends Component {
           ).innerHTML = `<h1 class="display-4">No Items in Wishlist</h1>`;
         }
       }
-    }, 0);
+    }, 2000);
   };
 
   render() {
