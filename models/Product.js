@@ -25,6 +25,9 @@ const ProductSchema = new Schema({
   photos: {
     type: [String],
   },
+  quotes: {
+    type: Array,
+  },
   date: {
     type: Date,
     default: Date.now,

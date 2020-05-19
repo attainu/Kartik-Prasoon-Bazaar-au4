@@ -50,6 +50,7 @@ class HomePage extends React.Component {
   }
 
   onClick = (event) => {
+    this.toTop();
     this.props.history.push(`/product/?id=${event.target.id}`);
   };
 
@@ -60,11 +61,19 @@ class HomePage extends React.Component {
           id: this.props.auth.user.id,
           proId: event.target.id,
         })
-        .then((res) => this.props.history.push("/wishlist"))
+        .then((res) => {
+          this.toTop();
+          this.props.history.push("/wishlist");
+        })
         .catch((err) => console.log(err));
     } else {
+      this.toTop();
       this.props.history.push("/login");
     }
+  };
+
+  toTop = () => {
+    window.scrollTo(0, 0);
   };
 
   render() {

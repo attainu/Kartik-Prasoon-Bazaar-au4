@@ -44,10 +44,15 @@ export const editProfile = (data) => (dispatch) => {
     .post("/api/users/editprofile", pass)
     .then(async (res) => {
       let ee = await setToken(res, dispatch);
+      toTop();
       data.history.push("/dashboard");
       console.log(ee);
     })
     .catch((err) => console.log(err));
+};
+
+const toTop = () => {
+  window.scrollTo(0, 0);
 };
 
 const setToken = (res, dispatch) => {

@@ -44,6 +44,7 @@ class ResultsPage extends React.Component {
   }
 
   onClick = (event) => {
+    this.toTop();
     this.props.history.push(`/product/?id=${event.target.id}`);
   };
 
@@ -54,7 +55,10 @@ class ResultsPage extends React.Component {
           id: this.props.auth.user.id,
           proId: event.target.id,
         })
-        .then((res) => this.props.history.push("/wishlist"))
+        .then((res) => {
+          this.toTop();
+          this.props.history.push("/wishlist");
+        })
         .catch((err) => console.log(err));
     } else {
       this.props.history.push("/login");
@@ -75,6 +79,10 @@ class ResultsPage extends React.Component {
 
   clear = () => {
     this.props.history.push("/results");
+  };
+
+  toTop = () => {
+    window.scrollTo(0, 0);
   };
 
   render() {

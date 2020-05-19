@@ -19,6 +19,7 @@ class MyAdsPage extends Component {
   }
 
   onClick = (event) => {
+    this.toTop();
     this.props.history.push(`/product/?id=${event.target.id}`);
   };
 
@@ -35,8 +36,13 @@ class MyAdsPage extends Component {
       })
       .then((res) => {
         localStorage.removeItem("persist:root");
+        this.toTop();
         window.location.reload();
       });
+  };
+
+  toTop = () => {
+    window.scrollTo(0, 0);
   };
 
   timeout = () => {
@@ -49,7 +55,7 @@ class MyAdsPage extends Component {
           ).innerHTML = `<h1 class="display-4">No Items for Sale</h1>`;
         }
       }
-    }, 2000);
+    }, 0);
   };
 
   render() {

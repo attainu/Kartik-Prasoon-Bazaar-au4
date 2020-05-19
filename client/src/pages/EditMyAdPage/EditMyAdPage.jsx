@@ -37,7 +37,10 @@ class EditMyAdPage extends Component {
     const newProduct = new FormData(event.target);
     axios
       .post("/api/products/editproduct", newProduct)
-      .then((res) => this.props.history.push("/myads"))
+      .then((res) => {
+        this.toTop();
+        this.props.history.push("/myads");
+      })
       .catch((err) => this.setState({ errors: err.response.data }));
   };
 
@@ -54,6 +57,10 @@ class EditMyAdPage extends Component {
     this.setState(newState);
   };
 
+  toTop = () => {
+    window.scrollTo(0, 0);
+  };
+
   render() {
     let product = this.state.productData;
     const { errors } = this.state;
@@ -62,7 +69,7 @@ class EditMyAdPage extends Component {
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
-              <h1 className="display-4 text-center">Add Your Product</h1>
+              <h1 className="display-4 text-center">Edit Your Product</h1>
               <p className="lead text-center">
                 Give good description for better sales.
               </p>
@@ -257,7 +264,12 @@ class EditMyAdPage extends Component {
                 <br />
                 <div className="d-flex justify-content-around">
                   <button className="btn btn-info col-5">Save</button>
-                  <button className="btn btn-secondary col-5">Cancel</button>
+                  <button
+                    className="btn btn-secondary col-5"
+                    onClick={this.toTop()}
+                  >
+                    Cancel
+                  </button>
                 </div>
               </form>
             </div>

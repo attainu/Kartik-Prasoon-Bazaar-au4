@@ -33,6 +33,10 @@ class MainHeader extends Component {
     this.setState({ [name]: value });
   };
 
+  toTop = (event) => {
+    window.scrollTo(0, 0);
+  };
+
   render() {
     const { isAuthenticated, user } = this.props.auth;
 
@@ -54,12 +58,12 @@ class MainHeader extends Component {
             Logout
           </Link>
         </li>
-        <li className="nav-item">
+        <li className="nav-item" onClick={this.toTop}>
           <Link className="nav-link" to="/dashboard">
             Dashboard
           </Link>
         </li>
-        <li className="nav-item">
+        <li className="nav-item" onClick={this.toTop}>
           <Link className="nav-link" to="/postad">
             Post Ad
           </Link>
@@ -70,11 +74,11 @@ class MainHeader extends Component {
     const guestLinks = (
       <ul className="navbar-nav ml-auto">
         <li className="nav-item">
-          <Link className="nav-link" to="/signup">
+          <Link className="nav-link" to="/signup" onClick={this.toTop}>
             Sign Up
           </Link>
         </li>
-        <li className="nav-item">
+        <li className="nav-item" onClick={this.toTop}>
           <Link className="nav-link" to="/login">
             Login
           </Link>
@@ -84,7 +88,7 @@ class MainHeader extends Component {
 
     return (
       <nav className="navbar navbar-expand-sm navbar-dark bg-dark sticky-top display">
-        <div className="col-2">
+        <div className="col-2" onClick={this.toTop}>
           <Link className="navbar-brand" to="/">
             <img src={Logo} alt="logo" style={{ width: "9rem" }} />
           </Link>

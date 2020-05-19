@@ -19,6 +19,7 @@ class WishlistPage extends Component {
   }
 
   onClick = (event) => {
+    this.toTop();
     this.props.history.push(`/product/?id=${event.target.id}`);
   };
 
@@ -33,9 +34,14 @@ class WishlistPage extends Component {
       .post("/api/users/deleteproductfromwishlist", data)
       .then((res) => {
         localStorage.removeItem("persist:root");
+        this.toTop();
         window.location.reload();
       })
       .catch((err) => console.log(err));
+  };
+
+  toTop = () => {
+    window.scrollTo(0, 0);
   };
 
   timeout = () => {
@@ -48,7 +54,7 @@ class WishlistPage extends Component {
           ).innerHTML = `<h1 class="display-4">No Items in Wishlist</h1>`;
         }
       }
-    }, 2000);
+    }, 0);
   };
 
   render() {

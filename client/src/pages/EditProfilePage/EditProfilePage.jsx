@@ -80,6 +80,10 @@ class EditProfilePage extends Component {
     this.setState({ [name]: value });
   };
 
+  toTop = () => {
+    window.scrollTo(0, 0);
+  };
+
   render() {
     return (
       <div className="create-profile mt-4">
@@ -272,7 +276,11 @@ class EditProfilePage extends Component {
                   >
                     Save
                   </button>
-                  <Link className="btn btn-secondary col-5" to="/dashboard">
+                  <Link
+                    className="btn btn-secondary col-5"
+                    to="/dashboard"
+                    onClick={this.toTop}
+                  >
                     Cancel
                   </Link>
                 </div>

@@ -38,8 +38,15 @@ class PostAdPage extends Component {
     const newProduct = new FormData(event.target);
     axios
       .post("/api/products/addproduct", newProduct)
-      .then((res) => this.props.history.push("/myads"))
-      .catch((err) => this.setState({ errors: err.response.data }));
+      .then((res) => {
+        this.toTop();
+        this.props.history.push("/myads");
+      })
+      .catch((err) => {
+        document.getElementById("saveButton").innerHTML = `Save`;
+        this.toTop();
+        this.setState({ errors: err.response.data });
+      });
   };
   handleChange = (event) => {
     const { value } = event.target;
@@ -47,6 +54,11 @@ class PostAdPage extends Component {
     newState.image.push(value);
     this.setState(newState);
   };
+
+  toTop = () => {
+    window.scrollTo(0, 0);
+  };
+
   render() {
     const { errors } = this.state;
     return (
@@ -234,7 +246,11 @@ class PostAdPage extends Component {
                   <button className="btn btn-info col-5" id="saveButton">
                     Save
                   </button>
-                  <Link to="/" className="btn btn-secondary col-5">
+                  <Link
+                    to="/"
+                    className="btn btn-secondary col-5"
+                    onClick={this.toTop}
+                  >
                     Cancel
                   </Link>
                 </div>

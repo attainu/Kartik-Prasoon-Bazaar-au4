@@ -9,6 +9,8 @@ import PropTypes from "prop-types";
 
 import { selectAuthInfo } from "../../Redux/auth/auth.selector";
 import { selectWishlistInfo } from "../../Redux/wishlist/wishlist-selector";
+import AddQuote from "../Quote/AddQuote";
+import QuotesView from "../Quote/QuotesView";
 
 class ProductView extends Component {
   state = {
@@ -40,18 +42,26 @@ class ProductView extends Component {
         id: event.target.id,
         userId: event.target.getAttribute("userid"),
       })
-      .then((res) => this.props.history.push("/myads"))
+      .then((res) => {
+        this.toTop();
+        this.props.history.push("/myads");
+      })
       .catch((err) => console.log(err));
   };
 
   onWishlist = (event) => {
+    document.getElementById(event.target.id).innerHTML = `<span
+  class="spinner-border spinner-border-sm"
+  role="status"
+  aria-hidden="true"
+></span>${" "}Loading...`;
     if (this.props.auth.isAuthenticated) {
       axios
         .post("/api/users/addtowishlist", {
           id: this.props.auth.user.id,
           proId: event.target.id,
         })
-        .then((res) => this.props.history.push("/wishlist"))
+        .then((res) => window.location.reload())
         .catch((err) => console.log(err));
     } else {
       this.props.history.push("/login");
@@ -74,6 +84,10 @@ class ProductView extends Component {
       .catch((err) => console.log(err));
   };
 
+  toTop = () => {
+    window.scrollTo(0, 0);
+  };
+
   render() {
     let myWish = false;
     let product = this.state.productData;
@@ -86,7 +100,7 @@ class ProductView extends Component {
     return (
       <Fragment>
         {/* main component */}
-        <main className="mt-5 pt-4">
+        <main>
           <div className="container dark-grey-text mt-5">
             {/* <!--Grid row--> */}
             <div className="row wow fadeIn">
@@ -219,31 +233,42 @@ class ProductView extends Component {
                       </Link>
                     </div>
                   ) : myWish ? (
-                    <button
-                      className="btn btn-danger mt-3"
-                      type="submit"
-                      onClick={this.onRemove}
-                      id={product._id}
-                    >
-                      <i
-                        className="fas fa-trash"
-                        style={{ color: "#ffffff" }}
-                      ></i>
-                      {` `}Remove from Wishlist
-                    </button>
+                    <div>
+                      <button
+                        className="btn btn-danger mt-3"
+                        type="submit"
+                        onClick={this.onRemove}
+                        id={product._id}
+                      >
+                        <i
+                          className="fas fa-trash"
+                          style={{ color: "#ffffff" }}
+                        ></i>
+                        {` `}Remove from Wishlist
+                      </button>
+                      <AddQuote
+                        user={this.props.auth.user}
+                        productData={this.state.productData}
+                      />
+                    </div>
                   ) : (
-                    <button
-                      className="btn btn-info mt-3"
-                      type="submit"
-                      onClick={this.onWishlist}
-                      id={product._id}
-                    >
-                      <i
-                        className="fas fa-heart"
-                        style={{ color: "#ffffff" }}
-                      ></i>
-                      {` `}Add to Wishlist
-                    </button>
+                    <div>
+                      <button
+                        className="btn btn-info mt-3"
+                        type="submit"
+                        onClick={this.onWishlist}
+                        id={product._id}
+                      >
+                        <i
+                          className="fas fa-heart"
+                          style={{ color: "#ffffff" }}
+                        ></i>
+                        {` `}Add to Wishlist
+                      </button>
+                      <h6 className="text-danger">
+                        Note: To send quotations add this item to your wishlist
+                      </h6>
+                    </div>
                   )}
                 </div>
                 {/* <!--Content--> */}
@@ -268,7 +293,7 @@ class ProductView extends Component {
 
             {/* <!--Grid row--> */}
             {this.props.auth.user.id === this.state.productData.user ? (
-              ""
+              <QuotesView productData={this.state.productData} />
             ) : (
               <div className="d-flex justify-content-center mt-5">
                 <div className="card card-body bg-info text-white mb-3 col-md-6">

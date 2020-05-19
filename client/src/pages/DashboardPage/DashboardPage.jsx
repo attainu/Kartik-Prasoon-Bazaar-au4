@@ -15,6 +15,10 @@ class DashboardPage extends React.Component {
     }
   }
 
+  toTop = () => {
+    window.scrollTo(0, 0);
+  };
+
   render() {
     return (
       <div className="dashboard mt-4">
@@ -28,15 +32,27 @@ class DashboardPage extends React.Component {
 
               {/* Dashboard Actions  */}
               <div className="btn-group mb-4" role="group">
-                <Link to="/editprofile" className="btn btn-light">
+                <Link
+                  to="/editprofile"
+                  className="btn btn-light"
+                  onClick={this.toTop}
+                >
                   <i className="fas fa-user-circle text-info mr-1"></i> Edit
                   Profile
                 </Link>
-                <Link to="/myads" className="btn btn-light">
+                <Link
+                  to="/myads"
+                  className="btn btn-light"
+                  onClick={this.toTop}
+                >
                   <i className="fab fa-buysellads text-info mr-1"></i>
                   My Ads
                 </Link>
-                <Link to="/wishlist" className="btn btn-light">
+                <Link
+                  to="/wishlist"
+                  className="btn btn-light"
+                  onClick={this.toTop}
+                >
                   <i className="fas fa-heart text-info mr-1"></i>
                   Wishlist
                 </Link>

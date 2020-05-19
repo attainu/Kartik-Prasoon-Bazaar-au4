@@ -233,4 +233,44 @@ router.get("/results/", (req, res) => {
     .catch((err) => res.status(404).json({ nopostsfound: "No posts found" }));
 });
 
+// @route     POST api/products/addquote
+// @desc      Add Quote
+// @access    Private
+router.post(
+  "/addquote",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    let quote = {
+      buyerId: req.body.buyerId,
+      buyerContactNo: req.body.buyerContactNo,
+      buyerName: req.body.buyerName,
+      buyerEmail: req.body.buyerEmail,
+      quote: req.body.quote,
+      date: new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" }),
+    };
+    Product.findByIdAndUpdate(
+      { _id: req.body.productId },
+      { $push: { quotes: quote } },
+      { new: true }
+    )
+      .then((user) => res.json(user))
+      .catch((error) => console.log(error));
+  }
+);
+
+// @route     POST api/products/deletequote
+// @desc      Delete Quote
+// @access    Private
+router.post(
+  "/deletequote",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    Product.updateOne(
+      { _id: req.body.productId },
+      { $pull: { quotes: { date: req.body.quoteDate } } },
+      { safe: true, multi: true }
+    ).then((product) => res.send("done"));
+  }
+);
+
 module.exports = router;
