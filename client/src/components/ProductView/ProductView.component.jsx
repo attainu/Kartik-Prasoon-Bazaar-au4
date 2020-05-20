@@ -334,9 +334,9 @@ class ProductView extends Component {
                         </p>
                         <p className="text-center">
                           {user.facebook ? (
-                            <Link to={user.facebook} className="text-white p-2">
+                            <a href={user.facebook} className="text-white p-2">
                               <i className="fab fa-facebook fa-2x"></i>
-                            </Link>
+                            </a>
                           ) : (
                             <i
                               className="fab fa-facebook fa-2x p-2"
@@ -344,9 +344,9 @@ class ProductView extends Component {
                             ></i>
                           )}
                           {user.youtube ? (
-                            <Link to={user.youtube} className="text-white p-2">
+                            <a href={user.youtube} className="text-white p-2">
                               <i className="fab fa-youtube fa-2x"></i>
-                            </Link>
+                            </a>
                           ) : (
                             <i
                               className="fab fa-youtube fa-2x p-2"
@@ -354,12 +354,9 @@ class ProductView extends Component {
                             ></i>
                           )}
                           {user.instagram ? (
-                            <Link
-                              to={user.instagram}
-                              className="text-white p-2"
-                            >
+                            <a href={user.instagram} className="text-white p-2">
                               <i className="fab fa-instagram fa-2x"></i>
-                            </Link>
+                            </a>
                           ) : (
                             <i
                               className="fab fa-instagram fa-2x p-2"

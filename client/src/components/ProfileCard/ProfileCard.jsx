@@ -37,12 +37,12 @@ class ProfileCard extends Component {
               </p>
               <p>
                 {this.props.auth.user.facebook ? (
-                  <Link
-                    to={this.props.auth.user.facebook}
+                  <a
+                    href={this.props.auth.user.facebook}
                     className="text-white p-2"
                   >
                     <i className="fab fa-facebook fa-2x"></i>
-                  </Link>
+                  </a>
                 ) : (
                   <i
                     className="fab fa-facebook fa-2x p-2"
@@ -50,12 +50,12 @@ class ProfileCard extends Component {
                   ></i>
                 )}
                 {this.props.auth.user.youtube ? (
-                  <Link
-                    to={this.props.auth.user.youtube}
+                  <a
+                    href={this.props.auth.user.youtube}
                     className="text-white p-2"
                   >
                     <i className="fab fa-youtube fa-2x"></i>
-                  </Link>
+                  </a>
                 ) : (
                   <i
                     className="fab fa-youtube fa-2x p-2"
@@ -63,12 +63,12 @@ class ProfileCard extends Component {
                   ></i>
                 )}
                 {this.props.auth.user.instagram ? (
-                  <Link
-                    to={this.props.auth.user.instagram}
+                  <a
+                    href={this.props.auth.user.instagram}
                     className="text-white p-2"
                   >
                     <i className="fab fa-instagram fa-2x"></i>
-                  </Link>
+                  </a>
                 ) : (
                   <i
                     className="fab fa-instagram fa-2x p-2"
